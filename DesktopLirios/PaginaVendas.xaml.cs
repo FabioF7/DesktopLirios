@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -17,9 +18,11 @@ namespace DesktopLirios
 {
     public partial class PaginaVendas : Page
     {
-        public PaginaVendas()
+        private SecureString jwtToken;
+        public PaginaVendas(SecureString token)
         {
             InitializeComponent();
+            jwtToken = token;
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)

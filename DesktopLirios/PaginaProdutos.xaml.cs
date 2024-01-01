@@ -16,10 +16,10 @@ using System.Windows.Shapes;
 
 namespace DesktopLirios
 {
-    public partial class PaginaAgenda : Page
+    public partial class PaginaProdutos : Page
     {
         private SecureString jwtToken;
-        public PaginaAgenda(SecureString token)
+        public PaginaProdutos(SecureString token)
         {
             InitializeComponent();
             jwtToken = token;

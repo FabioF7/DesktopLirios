@@ -34,42 +34,42 @@ namespace DesktopLirios
 
         private void LbiAgenda_Selected(object sender, RoutedEventArgs e)
         {
-
+            MainFrame.Navigate(new PaginaAgenda(jwtToken));
         }
 
         private void LbiVendas_Selected(object sender, RoutedEventArgs e)
         {
-
+            MainFrame.Navigate(new PaginaVendas(jwtToken));
         }
 
         private void LbiClientes_Selected(object sender, RoutedEventArgs e)
         {
-
+            MainFrame.Navigate(new PaginaClientes(jwtToken));
         }
 
         private void LbiServicos_Selected(object sender, RoutedEventArgs e)
         {
-
+            MainFrame.Navigate(new PaginaServicos(jwtToken));
         }
 
         private void LbiProdutos_Selected(object sender, RoutedEventArgs e)
         {
-
+            MainFrame.Navigate(new PaginaProdutos(jwtToken));
         }
 
         private void LbiGastos_Selected(object sender, RoutedEventArgs e)
         {
-
+            MainFrame.Navigate(new PaginaGastos(jwtToken));
         }
 
         private void LbiRelatorios_Selected(object sender, RoutedEventArgs e)
         {
-
+            MainFrame.Navigate(new PaginaRelatorios(jwtToken));
         }
 
         private void LbiConfiguracoes_Selected(object sender, RoutedEventArgs e)
         {
-
+            MainFrame.Navigate(new PaginaConfiguracoes(jwtToken));
         }
 
     }

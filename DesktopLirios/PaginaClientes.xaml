@@ -1,0 +1,25 @@
+﻿<Page
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:av="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="av" x:Class="DesktopLirios.PaginaClientes"
+      Background="White">
+
+    <Grid x:Name="grdTelaClientes" Grid.Column="1">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" MinWidth="1200"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" MinHeight="900"/>
+        </Grid.RowDefinitions>
+        <Frame x:Name="MainFrame" NavigationUIVisibility="Hidden"/>
+        <Button x:Name="btnBuscar" Content="Pesquisar" HorizontalAlignment="Left" Height="42" Margin="1093,38,0,0" VerticalAlignment="Top" Width="130" Click="btnBuscar_Click"/>
+        <DataGrid x:Name="grdClientes" HorizontalAlignment="Center" Height="557" VerticalAlignment="Center" Width="1242" av:ItemsSource="{av:SampleData ItemCount=5}"/>
+        <ComboBox x:Name="cbFiltros" HorizontalAlignment="Left" Height="26" Margin="10,38,0,0" VerticalAlignment="Top" Width="134">
+            <ComboBoxItem Content="Nome"/>
+            <ComboBoxItem Content="Dt Cadastro"/>
+        </ComboBox>
+    </Grid>
+
+</Page>
