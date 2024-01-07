@@ -1,0 +1,35 @@
+﻿<Window x:Class="DesktopLirios.FormularioProdutoPopup"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Height="320" Width="600">
+    <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Height="286" Width="580">
+        <TextBlock Text="Nome Produto:" VerticalAlignment="Top" Width="90" FontWeight="Bold" Height="21" HorizontalAlignment="Left" Margin="10,10,0,0" RenderTransformOrigin="0.225,-1.522"/>
+        <TextBox x:Name="txtNome" Width="245" Height="21" Margin="105,10,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        <TextBlock Text="Origem:" Width="50" Margin="376,10,0,0" Height="21" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+
+        <TextBlock Text="Código (SKU):" VerticalAlignment="Top" Width="85" Margin="10,46,0,0" FontWeight="Bold" HorizontalAlignment="Left" Height="21"/>
+        <TextBox x:Name="txtSKU" Width="179" Height="21" Margin="100,46,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        <TextBlock Text="Código (Barra):" Width="90" Margin="290,46,0,0" Height="21" HorizontalAlignment="Left" VerticalAlignment="Top" FontWeight="Bold"/>
+        <TextBox x:Name="txtBarra" Width="185" Height="21" Margin="385,46,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+
+        <TextBlock Text="Preço Varejo:" VerticalAlignment="Top" Width="80" Margin="10,85,0,0" Height="21" FontWeight="Bold" HorizontalAlignment="Left"/>
+        <TextBox x:Name="txtCusto" Width="90" Height="21" Margin="285,85,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        <TextBlock Text="Custo Médio:" Width="80" Margin="200,85,0,0" Height="21" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        <TextBox x:Name="txtValor" Width="90" Height="21" Margin="95,85,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+
+        <TextBlock Text="Categoria:" VerticalAlignment="Top" Width="65" Margin="10,121,0,0" FontWeight="Bold" Height="21" HorizontalAlignment="Left"/>
+        <ComboBox x:Name="cbCategoria" Width="120" Height="21" Margin="80,121,0,0" HorizontalAlignment="Left" VerticalAlignment="Top">
+            <ComboBoxItem Content="Masculino" Tag="Masc"/>
+            <ComboBoxItem Content="Feminino" Tag="Fem"/>
+        </ComboBox>
+
+        <TextBlock Text="Quantidade:" Margin="401,85,0,0" Width="75" Height="21" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="0.083,0.573"/>
+        <TextBox x:Name="txtQtd" Width="89" Height="21" Margin="481,85,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+
+        <Button x:Name="btnSalvar" Content="Salvar" Click="btnSalvar_ClickAsync" Height="22" Width="62" Margin="500,250,18,14" FontWeight="Bold" FontSize="10"/>
+        <ComboBox x:Name="cbOrigem" HorizontalAlignment="Left" Height="21" Margin="431,10,0,0" VerticalAlignment="Top" Width="139"/>
+        <Button x:Name="btnEntradas" Content="Entradas" Click="btnSalvar_ClickAsync" Height="22" Width="62" Margin="281,250,237,14" FontWeight="Bold" FontSize="10"/>
+        <Button x:Name="btnVendas" Content="Vendas" Click="btnSalvar_ClickAsync" Height="22" Width="62" Margin="348,250,170,14" FontWeight="Bold" FontSize="10"/>
+        <Button x:Name="btnHestoque" Content="Historico Estoque" Click="btnSalvar_ClickAsync" Height="22" Margin="415,250,85,14" FontWeight="Bold" FontSize="9" Width="80"/>
+    </Grid>
+</Window>

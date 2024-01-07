@@ -14,6 +14,9 @@ namespace DesktopLirios.Responses
         public int Sexo { get; set; }
         public int? Indicacao { get; set; }
         public int Bloqueado { get; set; }
+        public int Inadimplencia { get; set; }
+        public float? LimiteInadimplencia { get; set; }
+        public string? Observacoes { get; set; }
         public string? CadastradoPor { get; set; }
         public DateTime? DtCadastro { get; set; }
         public string? AlteradoPor { get; set; }

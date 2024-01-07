@@ -25,6 +25,19 @@ namespace DesktopLirios
         {
             InitializeComponent();
             jwtToken = token;
+            CenterWindowOnScreen();
+        }
+
+        private void CenterWindowOnScreen()
+        {
+            double screenWidth = SystemParameters.PrimaryScreenWidth;
+            double screenHeight = SystemParameters.PrimaryScreenHeight;
+
+            double windowWidth = Width;
+            double windowHeight = Height;
+
+            Left = (screenWidth - windowWidth) / 2;
+            Top = (screenHeight - windowHeight) / 2;
         }
 
         private void LbiInicio_Selected(object sender, RoutedEventArgs e)
@@ -62,14 +75,24 @@ namespace DesktopLirios
             MainFrame.Navigate(new PaginaGastos(jwtToken));
         }
 
+        private void LbiEntradas_Selected(object sender, RoutedEventArgs e)
+        {
+            //MainFrame.Navigate(new PaginEntradas(jwtToken));
+        }
+
+        private void LbiInventario_Selected(object sender, RoutedEventArgs e)
+        {
+            //MainFrame.Navigate(new PaginaInventario(jwtToken));
+        }
+
         private void LbiRelatorios_Selected(object sender, RoutedEventArgs e)
         {
             MainFrame.Navigate(new PaginaRelatorios(jwtToken));
         }
 
-        private void LbiConfiguracoes_Selected(object sender, RoutedEventArgs e)
+        private void LbiOutros_Selected(object sender, RoutedEventArgs e)
         {
-            MainFrame.Navigate(new PaginaConfiguracoes(jwtToken));
+            MainFrame.Navigate(new PaginaOutros(jwtToken));
         }
 
     }

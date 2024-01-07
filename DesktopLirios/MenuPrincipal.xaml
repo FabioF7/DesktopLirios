@@ -15,7 +15,7 @@
             <!-- Largura proporcional ao restante do espaço disponível -->
         </Grid.ColumnDefinitions>
 
-        <ListBox x:Name="MenuList" Grid.Column="0" FontFamily="Calibri" FontSize="18" Foreground="White" VerticalAlignment="Center" Height="461" BorderThickness="0,0,0,0" FontWeight="Bold">
+        <ListBox x:Name="MenuList" Grid.Column="0" FontFamily="Calibri" FontSize="18" Foreground="White" VerticalAlignment="Center" Height="563" BorderThickness="0,0,0,0" FontWeight="Bold">
             <ListBox.ItemContainerStyle>
                 <Style TargetType="ListBoxItem">
                     <Setter Property="Template">
@@ -36,8 +36,10 @@
             <ListBoxItem x:Name="LbiServicos" Background="Black" HorizontalAlignment="Left" Selected="LbiServicos_Selected">Serviço</ListBoxItem>
             <ListBoxItem x:Name="LbiProdutos" Background="Black" HorizontalAlignment="Left" Selected="LbiProdutos_Selected">Produtos</ListBoxItem>
             <ListBoxItem x:Name="LbiGastos" Background="Black" HorizontalAlignment="Left" Selected="LbiGastos_Selected">Gastos</ListBoxItem>
+            <ListBoxItem x:Name="LbiEntradas" Background="Black" HorizontalAlignment="Left" Selected="LbiEntradas_Selected">Entradas</ListBoxItem>
+            <ListBoxItem x:Name="LbiInventario" Background="Black" HorizontalAlignment="Left" Selected="LbiInventario_Selected">Inventario</ListBoxItem>
             <ListBoxItem x:Name="LbiRelatorios" Background="Black" HorizontalAlignment="Left" Selected="LbiRelatorios_Selected">Relatórios</ListBoxItem>
-            <ListBoxItem x:Name="LbiConfiguracoes" Background="Black" HorizontalAlignment="Left" Selected="LbiConfiguracoes_Selected">Configurações</ListBoxItem>
+            <ListBoxItem x:Name="LbiOutros" Background="Black" HorizontalAlignment="Left" Selected="LbiOutros_Selected">Outros</ListBoxItem>
             <!-- Adicione mais itens conforme necessário -->
         </ListBox>
 
@@ -46,6 +48,9 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="880*"/>
             </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1000*"/>
+            </Grid.ColumnDefinitions>
             <Frame x:Name="MainFrame" NavigationUIVisibility="Hidden"/>
         </Grid>
     </Grid>

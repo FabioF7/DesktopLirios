@@ -26,6 +26,19 @@ namespace DesktopLirios
         public MainWindow()
         {
             InitializeComponent();
+            CenterWindowOnScreen();
+        }
+
+        private void CenterWindowOnScreen()
+        {
+            double screenWidth = SystemParameters.PrimaryScreenWidth;
+            double screenHeight = SystemParameters.PrimaryScreenHeight;
+
+            double windowWidth = Width;
+            double windowHeight = Height;
+
+            Left = (screenWidth - windowWidth) / 2;
+            Top = (screenHeight - windowHeight) / 2;
         }
 
         private async void btnAcessar_Click(object sender, RoutedEventArgs e)
