@@ -16,10 +16,16 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="FormularioVendasPopup.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="FormularioProdutoPopup.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="FormularioClientePopup.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="PaginaVendas.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="PaginaProdutos.xaml.cs">
@@ -41,9 +47,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="PaginaInicio.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Update="PaginaVendas.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>

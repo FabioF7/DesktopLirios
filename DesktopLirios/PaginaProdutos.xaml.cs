@@ -31,11 +31,11 @@ namespace DesktopLirios
             {
                 var response = await ProdutoAPI.ProdutoApi(null, null, "Get", jwtToken);
 
-                List<ProdutoResponse> clientes = JsonConvert.DeserializeObject<List<ProdutoResponse>>(response);
+                List<ProdutoResponse> produtos = JsonConvert.DeserializeObject<List<ProdutoResponse>>(response);
 
                 listaProdutos = JsonConvert.DeserializeObject<List<ProdutoResponse>>(response);
 
-                grdProdutos.ItemsSource = clientes;
+                grdProdutos.ItemsSource = produtos;
             }
             catch (Exception ex)
             {
@@ -48,7 +48,10 @@ namespace DesktopLirios
             string termoPesquisa = txtPesquisar.Text.ToLower();
 
             List<ProdutoResponse> produtosFiltrados = listaProdutos
-            .Where(produto => produto.Nome.ToLower().Contains(termoPesquisa))
+            .Where(produto =>
+                produto.Nome.ToLower().Contains(termoPesquisa) ||
+                produto.Codigo.ToString().ToLower().Contains(termoPesquisa) ||
+                produto.CodigoDeBarra.ToString().Contains(termoPesquisa))
             .ToList();
 
             grdProdutos.ItemsSource = produtosFiltrados;
@@ -62,81 +65,98 @@ namespace DesktopLirios
         private async void btnEditar_Click(object sender, RoutedEventArgs e)
         {
 
-        //    try
-        //    {
-        //        Produto = new ProdutoResponse()
-        //        {
-        //            Id = ((ProdutoResponse)grdProdutos.SelectedItem).Id,
-        //            Nome = ((ProdutoResponse)grdProdutos.SelectedItem).Nome,
+            try
+            {
+                Produto = new ProdutoResponse()
+                {
+                    Id = ((ProdutoResponse)grdProdutos.SelectedItem).Id,
+                    Nome = ((ProdutoResponse)grdProdutos.SelectedItem).Nome,
+                    OrigemId = ((ProdutoResponse)grdProdutos.SelectedItem).OrigemId,
+                    Codigo = ((ProdutoResponse)grdProdutos.SelectedItem).Codigo,
+                    CodigoDeBarra = ((ProdutoResponse)grdProdutos.SelectedItem).CodigoDeBarra,
+                    ValorCusto = ((ProdutoResponse)grdProdutos.SelectedItem).ValorCusto,
+                    ValorVendaRevista = ((ProdutoResponse)grdProdutos.SelectedItem).ValorVendaRevista,
+                    IdCategoria = ((ProdutoResponse)grdProdutos.SelectedItem).IdCategoria,
+                    Quantidade = ((ProdutoResponse)grdProdutos.SelectedItem).Quantidade
+                };
 
-        //        };
+                var formularioPopup = new FormularioProdutoPopup(Produto, jwtToken, "Editar");
+                formularioPopup.ShowDialog();
 
-        //        var formularioPopup = new FormularioProdutoPopup(Produto, jwtToken);
-        //        formularioPopup.ShowDialog();
-
-        //        await CarregarProdutosAsync();
-        //    }
-        //    catch (NullReferenceException ex)
-        //    {
-        //        MessageBox.Show("Nenhum Cliente selecionado!");
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        MessageBox.Show($"Erro ao carregar formulário do Cliente: {ex.Message}");
-        //    }
+                await CarregarProdutosAsync();
+            }
+            catch (NullReferenceException ex)
+            {
+                MessageBox.Show("Nenhum Produto selecionado!");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Erro ao carregar formulário do Produto: {ex.Message}");
+            }
         }
 
         private async void btnExcluir_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-                MessageBoxResult resultado = MessageBox.Show($"Você tem certeza que deseja Excluir o Cliente {((ClienteResponse)grdProdutos.SelectedItem).Nome.ToUpper()}?", "Confirmação", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                MessageBoxResult resultado = MessageBox.Show($"Você tem certeza que deseja Excluir o Produto {((ProdutoResponse)grdProdutos.SelectedItem).Nome.ToUpper()}?", "Confirmação", MessageBoxButton.YesNo, MessageBoxImage.Question);
 
                 if (resultado == MessageBoxResult.Yes)
                 {
-                    var response = await ClienteAPI.ClienteApi(null, ((ClienteResponse)grdProdutos.SelectedItem).Id, "Delete", jwtToken);
+                    var response = await ProdutoAPI.ProdutoApi(null, ((ProdutoResponse)grdProdutos.SelectedItem).Id, "Delete", jwtToken);
                 }
 
                 await CarregarProdutosAsync();
             }
             catch (NullReferenceException ex)
             {
-                MessageBox.Show("Nenhum Cliente selecionado!");
+                MessageBox.Show("Nenhum Produto selecionado!");
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Erro ao excluir dados do Cliente: {ex.Message}");
+                MessageBox.Show($"Erro ao excluir dados do Produto: {ex.Message}");
             }
         }
 
         private async void btnCadastrar_Click(object sender, RoutedEventArgs e)
         {
-        //    try
-        //    {
-        //        var formularioPopup = new FormularioProdutoPopup(null, jwtToken);
-        //        formularioPopup.ShowDialog();
+            try
+            {
+                var formularioPopup = new FormularioProdutoPopup(null, jwtToken, "Cadastrar");
+                formularioPopup.ShowDialog();
 
-        //        await CarregarProdutosAsync();
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        MessageBox.Show($"Erro ao carregar formulário do Cliente: {ex.Message}");
-        //    }
+                await CarregarProdutosAsync();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Erro ao carregar formulário de cadastro de Produtos: {ex.Message}");
+            }
         }
 
         private void btnVisualizar_Click(object sender, RoutedEventArgs e)
         {
-            //    try
-            //    {
-            //        var formularioPopup = new FormularioProdutoPopup(null, jwtToken);
-            //        formularioPopup.ShowDialog();
+            try
+            {
+                Produto = new ProdutoResponse()
+                {
+                    Id = ((ProdutoResponse)grdProdutos.SelectedItem).Id,
+                    Nome = ((ProdutoResponse)grdProdutos.SelectedItem).Nome,
+                    OrigemId = ((ProdutoResponse)grdProdutos.SelectedItem).OrigemId,
+                    Codigo = ((ProdutoResponse)grdProdutos.SelectedItem).Codigo,
+                    CodigoDeBarra = ((ProdutoResponse)grdProdutos.SelectedItem).CodigoDeBarra,
+                    ValorCusto = ((ProdutoResponse)grdProdutos.SelectedItem).ValorCusto,
+                    ValorVendaRevista = ((ProdutoResponse)grdProdutos.SelectedItem).ValorVendaRevista,
+                    IdCategoria = ((ProdutoResponse)grdProdutos.SelectedItem).IdCategoria,
+                    Quantidade = ((ProdutoResponse)grdProdutos.SelectedItem).Quantidade
+                };
 
-            //        await CarregarProdutosAsync();
-            //    }
-            //    catch (Exception ex)
-            //    {
-            //        MessageBox.Show($"Erro ao carregar formulário do Cliente: {ex.Message}");
-            //    }
+                var formularioPopup = new FormularioProdutoPopup(Produto, jwtToken, "Visualizar");
+                formularioPopup.ShowDialog();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Erro ao carregar formulário do Produto: {ex.Message}");
+            }
         }
     }
 }

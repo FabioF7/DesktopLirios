@@ -153,7 +153,7 @@ namespace DesktopLirios
             }
         }
 
-        private async void btnVisualizar_Click(object sender, RoutedEventArgs e)
+        private void btnVisualizar_Click(object sender, RoutedEventArgs e)
         {
             try
             {
@@ -176,8 +176,6 @@ namespace DesktopLirios
 
                 var formularioPopup = new FormularioClientePopup(Cliente, jwtToken, "Visualizar");
                 formularioPopup.ShowDialog();
-
-                await CarregarClientesAsync();
             }
             catch (NullReferenceException ex)
             {

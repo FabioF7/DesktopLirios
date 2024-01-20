@@ -17,8 +17,8 @@
         <Button x:Name="btnCadastrar" Content="Cadastrar" HorizontalAlignment="Left" Height="22" Margin="10,563,0,0" VerticalAlignment="Top" Width="62" Click="btnCadastrar_Click" FontWeight="Bold" FontSize="10"/>
 
         <Button x:Name="btnExcluir" Content="Excluir" HorizontalAlignment="Left" Height="22" Margin="796,563,0,0" VerticalAlignment="Top" Width="62" FontWeight="Bold" FontSize="10" Click="btnExcluir_Click"/>
-        <TextBox x:Name="txtPesquisar" HorizontalAlignment="Left" Height="24" Margin="115,26,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="300" TextChanged="txtPesquisar_TextChanged"/>
-        <Label Content="Nome:" HorizontalAlignment="Left" Height="25" Margin="10,26,0,0" VerticalAlignment="Top" Width="100" FontWeight="Bold" FontSize="11"/>
+        <TextBox x:Name="txtPesquisar" HorizontalAlignment="Left" Height="24" Margin="77,26,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="428" TextChanged="txtPesquisar_TextChanged"/>
+        <Label Content="Pesquisar:" HorizontalAlignment="Left" Height="25" Margin="10,26,0,0" VerticalAlignment="Top" Width="62" FontWeight="Bold" FontSize="11"/>
         <Button x:Name="btnVisualizar" Content="Visualizar" HorizontalAlignment="Left" Margin="928,563,0,0" VerticalAlignment="Top" Width="62" Height="22" FontSize="10" FontWeight="Bold" Click="btnVisualizar_Click"/>
 
     </Grid>

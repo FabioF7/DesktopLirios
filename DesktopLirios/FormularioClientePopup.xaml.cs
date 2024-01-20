@@ -186,6 +186,7 @@ namespace DesktopLirios
             cbSexo.IsEnabled = false;
             rbSim.IsEnabled = false;
             rbNao.IsEnabled = false;
+            btnSalvar.IsEnabled = false;
         }
     }
 }

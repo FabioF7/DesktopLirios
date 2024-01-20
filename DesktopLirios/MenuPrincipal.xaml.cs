@@ -1,17 +1,11 @@
-﻿using System;
+﻿using DesktopLirios.Responses;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Security;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
+using DesktopLirios.Common;
 
 namespace DesktopLirios
 {
@@ -26,6 +20,8 @@ namespace DesktopLirios
             InitializeComponent();
             jwtToken = token;
             CenterWindowOnScreen();
+            CarregarClientesAsync();
+            CarregarProdutosAsync();
         }
 
         private void CenterWindowOnScreen()
@@ -77,7 +73,7 @@ namespace DesktopLirios
 
         private void LbiEntradas_Selected(object sender, RoutedEventArgs e)
         {
-            //MainFrame.Navigate(new PaginEntradas(jwtToken));
+            //MainFrame.Navigate(new PaginaEntradas(jwtToken));
         }
 
         private void LbiInventario_Selected(object sender, RoutedEventArgs e)
@@ -93,6 +89,40 @@ namespace DesktopLirios
         private void LbiOutros_Selected(object sender, RoutedEventArgs e)
         {
             MainFrame.Navigate(new PaginaOutros(jwtToken));
+        }
+
+        private async void CarregarClientesAsync()
+        {
+            try
+            {
+                var response = await ClienteAPI.ClienteApi(null, null, "Get", jwtToken);
+
+                List<ClienteResponse> clientes = JsonConvert.DeserializeObject<List<ClienteResponse>>(response);
+
+                ClienteGlobal.clienteGlobal = JsonConvert.DeserializeObject<List<ClienteResponse>>(response);
+
+            }
+            catch (Exception ex)
+            {
+                //MessageBox.Show($"Erro ao carregar dados da API: {ex.Message}");
+            }
+        }
+
+        private async void CarregarProdutosAsync()
+        {
+            try
+            {
+                var response = await ProdutoAPI.ProdutoApi(null, null, "Get", jwtToken);
+
+                List<ProdutoResponse> produtos = JsonConvert.DeserializeObject<List<ProdutoResponse>>(response);
+
+                ProdutoGlobal.produtoGlobal = JsonConvert.DeserializeObject<List<ProdutoResponse>>(response);
+
+            }
+            catch (Exception ex)
+            {
+                //MessageBox.Show($"Erro ao carregar dados da API: {ex.Message}");
+            }
         }
 
     }

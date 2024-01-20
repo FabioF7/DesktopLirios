@@ -1,13 +1,12 @@
 ﻿using DesktopLirios.Requests;
 using DesktopLirios.Responses;
-using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using System;
 using System.Windows;
-using System.Windows.Media;
 using System.Threading.Tasks;
 using System.Security;
+using System.Linq;
 
 namespace DesktopLirios
 {
@@ -23,7 +22,7 @@ namespace DesktopLirios
             InitializeComponent();
             DataContext = this;
             jwtToken = token;
-            tipoUso = tipoUso;
+            tipoTela = tipoUso;
             CarregaForm(ProdutoMostra);
             CenterWindowOnScreen();
         }
@@ -40,13 +39,34 @@ namespace DesktopLirios
             Top = (screenHeight - windowHeight) / 2;
         }
 
-        private void CarregaForm(ProdutoResponse? ProdutoMostra)
+        private async void CarregaForm(ProdutoResponse? ProdutoMostra)
         {
-            if (ProdutoMostra != null)
+            cbOrigem.ItemsSource = await CarregaOrigem();
+
+            if (ProdutoMostra != null && tipoTela != "Cadastrar")
             {
                 id = (int)ProdutoMostra.Id;
-                txtNome.Text = ProdutoMostra.Nome;
+                txtNome.Text = ProdutoMostra.Nome;               
+                txtSKU.Text = ProdutoMostra.Codigo;
+                txtBarra.Text = ProdutoMostra.CodigoDeBarra.ToString();
+                txtCusto.Text = ProdutoMostra.ValorCusto.ToString();
+                txtValor.Text = ProdutoMostra.ValorVendaRevista.ToString();
+                //cbCategoria.SelectedIndex = ProdutoMostra.IdCategoria;
+                txtQtd.Text = ProdutoMostra.Quantidade.ToString();
 
+                if (cbOrigem.ItemsSource != null)
+                {
+                    cbOrigem.SelectedIndex = ProdutoMostra.OrigemId - 1;
+                };
+
+                if (tipoTela == "Editar")
+                {
+                    Produto = CarregaProduto(ProdutoMostra);
+                }
+                if (tipoTela == "Visualizar")
+                {
+                    CarregaVisualizar();
+                }
                 ProdutoRequest ProdutoEdicao = new ProdutoRequest();
 
                 ProdutoEdicao.Nome = ProdutoMostra.Nome;
@@ -63,6 +83,13 @@ namespace DesktopLirios
                 if (Produto != null)
                 {
                     Produto.Nome = txtNome.Text;
+                    Produto.OrigemId = cbOrigem.SelectedIndex + 1;
+                    Produto.Codigo = txtSKU.Text;
+                    Produto.CodigoDeBarra = Int64.Parse(txtBarra.Text);
+                    Produto.ValorCusto = long.Parse(txtCusto.Text);
+                    Produto.ValorVendaRevista = long.Parse(txtValor.Text);
+                    //Produto.IdCategoria = cbCategoria.SelectedIndex;
+                    Produto.Quantidade = int.Parse(txtQtd.Text);
 
                     MessageBoxResult resultado = MessageBox.Show($"Você tem certeza que deseja Salvar as Alterações feitas no Produto {Produto.Nome.ToUpper()}?", "Confirmação", MessageBoxButton.YesNo, MessageBoxImage.Question);
                     if (resultado == MessageBoxResult.Yes)
@@ -92,8 +119,14 @@ namespace DesktopLirios
                         Produto = new ProdutoRequest();
 
                         Produto.Nome = txtNome.Text;
+                        Produto.OrigemId = cbOrigem.SelectedIndex + 1;
+                        Produto.Codigo = txtSKU.Text;
+                        Produto.CodigoDeBarra = Int64.Parse(txtBarra.Text);
+                        Produto.ValorCusto = long.Parse(txtCusto.Text);
+                        Produto.ValorVendaRevista = long.Parse(txtValor.Text);
+                        //Produto.IdCategoria = cbCategoria.SelectedIndex;
+                        Produto.Quantidade = int.Parse(txtQtd.Text);
 
-                    
                         var response = await ProdutoAPI.ProdutoApi(Produto, null, "Post", jwtToken);
                     }
                     catch (Exception ex)
@@ -104,5 +137,45 @@ namespace DesktopLirios
             }
             Close();
         }
+
+        private ProdutoRequest CarregaProduto(ProdutoResponse? ProdutoMostra)
+        {
+            ProdutoRequest ProdutoEdicao = new ProdutoRequest();
+
+            ProdutoEdicao.Nome = ProdutoMostra.Nome;
+            ProdutoEdicao.OrigemId = ProdutoMostra.OrigemId;
+            ProdutoEdicao.Codigo = ProdutoMostra.Codigo;
+            ProdutoEdicao.CodigoDeBarra = ProdutoMostra.CodigoDeBarra;
+            ProdutoEdicao.ValorCusto = ProdutoMostra.ValorCusto;
+            ProdutoEdicao.ValorVendaRevista = ProdutoMostra.ValorVendaRevista;
+            ProdutoEdicao.IdCategoria = ProdutoMostra.IdCategoria;
+            ProdutoEdicao.Quantidade = ProdutoMostra.Quantidade;
+
+            return ProdutoEdicao;
+        }
+
+        private void CarregaVisualizar()
+        {
+            txtNome.IsReadOnly = true;
+            cbOrigem.IsEnabled = false;
+            txtSKU.IsReadOnly = true;
+            txtBarra.IsReadOnly = true;
+            txtCusto.IsReadOnly = true;
+            txtValor.IsReadOnly = true;
+            cbCategoria.IsEnabled = false;
+            txtQtd.IsReadOnly = true;
+            btnSalvar.IsEnabled = false;
+        }
+
+        private async Task<List<string>> CarregaOrigem()
+        {
+            var response = await OrigemAPI.OrigemApi(null, null, "Get", jwtToken);
+            List<OrigemResponse> origens = JsonConvert.DeserializeObject<List<OrigemResponse>>(response);
+
+            List<string> nomesOrigens = origens.Select(origem => origem.Nome).ToList();
+
+            return nomesOrigens;
+        }
+
     }
 }

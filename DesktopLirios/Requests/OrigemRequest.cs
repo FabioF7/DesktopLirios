@@ -1,10 +1,9 @@
 ﻿using System;
 
-namespace DesktopLirios.Responses
+namespace DesktopLirios.Requests
 {
-    public class OrigemResponse
+    public class OrigemRequest
     {
-        public int Id { get; set; }
         public string? Nome { get; set; }
         public int? Ativo { get; set; }
         public DateTime? DtCadastro { get; set; }
