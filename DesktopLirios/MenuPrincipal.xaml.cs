@@ -22,6 +22,7 @@ namespace DesktopLirios
             CenterWindowOnScreen();
             CarregarClientesAsync();
             CarregarProdutosAsync();
+            CarregarVendasAsync();
         }
 
         private void CenterWindowOnScreen()
@@ -97,8 +98,6 @@ namespace DesktopLirios
             {
                 var response = await ClienteAPI.ClienteApi(null, null, "Get", jwtToken);
 
-                List<ClienteResponse> clientes = JsonConvert.DeserializeObject<List<ClienteResponse>>(response);
-
                 ClienteGlobal.clienteGlobal = JsonConvert.DeserializeObject<List<ClienteResponse>>(response);
 
             }
@@ -114,9 +113,22 @@ namespace DesktopLirios
             {
                 var response = await ProdutoAPI.ProdutoApi(null, null, "Get", jwtToken);
 
-                List<ProdutoResponse> produtos = JsonConvert.DeserializeObject<List<ProdutoResponse>>(response);
-
                 ProdutoGlobal.produtoGlobal = JsonConvert.DeserializeObject<List<ProdutoResponse>>(response);
+
+            }
+            catch (Exception ex)
+            {
+                //MessageBox.Show($"Erro ao carregar dados da API: {ex.Message}");
+            }
+        }
+
+        private async void CarregarVendasAsync()
+        {
+            try
+            {
+                var response = await VendaAPI.VendaApi(null, null, "Get", jwtToken);
+
+                VendaGlobal.vendaGlobal = JsonConvert.DeserializeObject<List<VendaResponse>>(response);
 
             }
             catch (Exception ex)

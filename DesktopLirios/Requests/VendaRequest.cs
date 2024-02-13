@@ -4,6 +4,7 @@ namespace DesktopLirios.Requests
 {
     public class VendaRequest
     {
+        public int IdVenda { get; set; }
         public float ValorVenda { get; set; }
         public DateTime DtVenda { get; set; }
         public int ClienteId { get; set; }
@@ -12,6 +13,7 @@ namespace DesktopLirios.Requests
         public int MetodoPagamento { get; set; }
         public int Tipo { get; set; }
         public int TipoTransacao { get; set; }
+        public int Quantidade { get; set; }
         public int? PreVenda { get; set; }
         public string? CadastradoPor { get; set; }
         public string? AlteradoPor { get; set; }

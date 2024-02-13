@@ -1,13 +1,9 @@
 ﻿using DesktopLirios.Requests;
 using DesktopLirios.Responses;
-using Newtonsoft.Json.Linq;
-using Newtonsoft.Json;
-using System.Collections.Generic;
 using System;
 using System.Windows;
-using System.Windows.Media;
-using System.Threading.Tasks;
 using System.Security;
+using System.Threading.Tasks;
 
 namespace DesktopLirios
 {
@@ -40,7 +36,7 @@ namespace DesktopLirios
             Top = (screenHeight - windowHeight) / 2;
         }
 
-        private void CarregaForm(ClienteResponse? ClienteMostra)
+        private async void CarregaForm(ClienteResponse? ClienteMostra)
         {
             if (ClienteMostra != null && tipoTela != "Cadastrar")
             {
@@ -72,6 +68,9 @@ namespace DesktopLirios
                     rbNao.IsChecked = false;
                 }
 
+                var retorno = await CarregaValorDivida(id);
+                txtValDivida.Text = retorno.ToString();
+
                 if (tipoTela == "Editar")
                 {
                     Cliente = CarregaCliente(ClienteMostra);
@@ -80,6 +79,14 @@ namespace DesktopLirios
                 {
                     CarregaVisualizar();
                 }
+            }
+            else
+            {
+                btnHistorico.IsEnabled = false;
+                btnVenda.IsEnabled = false;
+                btnOk.Visibility = Visibility.Collapsed;
+                lblPagou.Visibility = Visibility.Collapsed;
+                txtPagou.Visibility = Visibility.Collapsed;
             }
 
         }
@@ -168,6 +175,9 @@ namespace DesktopLirios
             ClienteEdicao.Observacoes = ClienteMostra.Observacoes;
             //txtIndicacao.Text = Cliente.Indicacao;
 
+            btnHistorico.IsEnabled = false;
+            btnVenda.IsEnabled = false;
+
             return ClienteEdicao;
         }
 
@@ -179,6 +189,7 @@ namespace DesktopLirios
             txtCelular.IsReadOnly = true;
             txtEndereco.IsReadOnly = true;
             txtCEP.IsReadOnly = true;
+            txtValDivida.IsReadOnly = true;
             txtLimite.IsReadOnly = true;
             txtObservacao.IsReadOnly = true;
             //txtIndicacao.Text = Cliente.Indicacao;
@@ -187,6 +198,63 @@ namespace DesktopLirios
             rbSim.IsEnabled = false;
             rbNao.IsEnabled = false;
             btnSalvar.IsEnabled = false;
+        }
+
+        private async Task<string> CarregaValorDivida(int id)
+        {
+            var response = await PagamentoAPI.PagamentoApi(null, id, "Get2", jwtToken);
+
+            if(response != null)
+            {
+                return response;
+            }
+
+            return null;
+        }
+
+        private void btnVenda_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                VendaResponse venda = new VendaResponse()
+                {
+                    IdVenda = id
+                };
+
+                var formularioPopup = new FormularioVendasPopup(venda, jwtToken, "Cliente");
+
+                formularioPopup.SetTxtClienteSearch(txtNome.Text);
+
+                formularioPopup.ShowDialog();
+
+            }
+            catch (NullReferenceException ex)
+            {
+                MessageBox.Show("Nenhum Cliente selecionado!");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Erro ao carregar formulário de Venda: {ex.Message}");
+            }
+
+        }
+
+        private void btnHistorico_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                //var paginaVendas = new PaginaVendas(jwtToken);
+                //MainFrame.Navigate(paginaVendas);
+
+            }
+            catch (NullReferenceException ex)
+            {
+                MessageBox.Show("Nenhum Cliente selecionado!");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Erro ao carregar formulário de Venda: {ex.Message}");
+            }
         }
     }
 }

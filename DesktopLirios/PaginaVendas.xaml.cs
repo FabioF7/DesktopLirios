@@ -5,8 +5,7 @@ using System.Security;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using DesktopLirios.API_Services;
-using DesktopLirios.Requests;
+using DesktopLirios.Common;
 using DesktopLirios.Responses;
 using Newtonsoft.Json;
 
@@ -33,6 +32,8 @@ namespace DesktopLirios
 
                 List<VendaResponse> Vendas = JsonConvert.DeserializeObject<List<VendaResponse>>(response);
 
+                VendaGlobal.vendaGlobal = JsonConvert.DeserializeObject<List<VendaResponse>>(response);
+
                 listaVendas = JsonConvert.DeserializeObject<List<VendaResponse>>(response);
 
                 grdVendas.ItemsSource = Vendas;
@@ -47,14 +48,13 @@ namespace DesktopLirios
         {
             string termoPesquisa = txtPesquisar.Text.ToLower();
 
-            List<VendaResponse> VendasFiltrados = listaVendas;
+            //List<VendaResponse> VendasFiltrados = listaVendas
             //.Where(Venda =>
             //    Venda.Nome.ToLower().Contains(termoPesquisa) ||
-            //    Venda.Codigo.ToString().ToLower().Contains(termoPesquisa) ||
-            //    Venda.CodigoDeBarra.ToString().Contains(termoPesquisa))
+            //    Venda.Codigo.ToString().ToLower().Contains(termoPesquisa)
             //.ToList();
 
-            grdVendas.ItemsSource = VendasFiltrados;
+            //grdVendas.ItemsSource = VendasFiltrados;
         }
         
         private async void btnBuscar_Click(object sender, RoutedEventArgs e)
@@ -69,8 +69,17 @@ namespace DesktopLirios
             {
                 Venda = new VendaResponse()
                 {
-                    Id = ((VendaResponse)grdVendas.SelectedItem).Id,
-
+                    IdVenda = ((VendaResponse)grdVendas.SelectedItem).IdVenda,
+                    ValorVenda = ((VendaResponse)grdVendas.SelectedItem).ValorVenda,
+                    DtVenda = ((VendaResponse)grdVendas.SelectedItem).DtVenda,
+                    ClienteId = ((VendaResponse)grdVendas.SelectedItem).ClienteId,
+                    ProdutoId = ((VendaResponse)grdVendas.SelectedItem).ProdutoId,
+                    CustoProduto = ((VendaResponse)grdVendas.SelectedItem).CustoProduto,
+                    MetodoPagamento = ((VendaResponse)grdVendas.SelectedItem).MetodoPagamento,
+                    Tipo = ((VendaResponse)grdVendas.SelectedItem).Tipo,
+                    TipoTransacao = ((VendaResponse)grdVendas.SelectedItem).TipoTransacao,
+                    Quantidade = ((VendaResponse)grdVendas.SelectedItem).Quantidade,
+                    PreVenda = ((VendaResponse)grdVendas.SelectedItem).PreVenda
                 };
 
                 var formularioPopup = new FormularioVendasPopup(Venda, jwtToken, "Editar");
@@ -109,8 +118,17 @@ namespace DesktopLirios
             {
                 Venda = new VendaResponse()
                 {
-                    Id = ((VendaResponse)grdVendas.SelectedItem).Id,
-
+                    IdVenda = ((VendaResponse)grdVendas.SelectedItem).IdVenda,
+                    ValorVenda = ((VendaResponse)grdVendas.SelectedItem).ValorVenda,
+                    DtVenda = ((VendaResponse)grdVendas.SelectedItem).DtVenda,
+                    ClienteId = ((VendaResponse)grdVendas.SelectedItem).ClienteId,
+                    ProdutoId = ((VendaResponse)grdVendas.SelectedItem).ProdutoId,
+                    CustoProduto = ((VendaResponse)grdVendas.SelectedItem).CustoProduto,
+                    MetodoPagamento = ((VendaResponse)grdVendas.SelectedItem).MetodoPagamento,
+                    Tipo = ((VendaResponse)grdVendas.SelectedItem).Tipo,
+                    TipoTransacao = ((VendaResponse)grdVendas.SelectedItem).TipoTransacao,
+                    Quantidade = ((VendaResponse)grdVendas.SelectedItem).Quantidade,
+                    PreVenda = ((VendaResponse)grdVendas.SelectedItem).PreVenda
                 };
 
                 var formularioPopup = new FormularioVendasPopup(Venda, jwtToken, "Visualizar");
@@ -121,5 +139,24 @@ namespace DesktopLirios
                 MessageBox.Show($"Erro ao carregar formulário do Venda: {ex.Message}");
             }
         }
+
+        private void chbPreVenda_Checked(object sender, RoutedEventArgs e)
+        {
+            List<VendaResponse> vendasFiltradas = listaVendas
+                .Where(venda => venda.PreVenda == 1)
+                .ToList();
+
+            grdVendas.ItemsSource = vendasFiltradas;
+        }
+
+        private void chbPreVenda_Unchecked(object sender, RoutedEventArgs e)
+        {
+            List<VendaResponse> vendasFiltradas = listaVendas
+                .Where(venda => venda.PreVenda == 0)
+                .ToList();
+
+            grdVendas.ItemsSource = vendasFiltradas;
+        }
+
     }
 }

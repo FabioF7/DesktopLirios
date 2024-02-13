@@ -10,6 +10,7 @@ using DesktopLirios.Common;
 using System.Collections.ObjectModel;
 using System.Windows.Data;
 using Newtonsoft.Json;
+using System.Security.Claims;
 
 namespace DesktopLirios
 {
@@ -17,7 +18,8 @@ namespace DesktopLirios
     {
         public VendaRequest? Venda { get; set; }
         private SecureString jwtToken;
-        private int? id;
+        private int? idCliente;
+        private int idVenda;
         private string tipoTela;
         private ObservableCollection<ProdutoResponse> produtosFiltrados = new ObservableCollection<ProdutoResponse>();
         private List<KeyValuePair<int?, ClienteResponse>> listaClientes;
@@ -47,9 +49,48 @@ namespace DesktopLirios
 
         private async void CarregaForm(VendaResponse? VendaMostra)
         {
-            if (VendaMostra != null && tipoTela != "Cadastrar")
+            if (VendaMostra != null && tipoTela == "Cliente")
             {
-                id = (int)VendaMostra.Id;
+                idVenda = (int)VendaMostra.IdVenda;
+
+                CarregaComboBox();
+            }
+            else if (VendaMostra != null && tipoTela != "Cadastrar")
+            {
+                idVenda = (int)VendaMostra.IdVenda;
+
+                txtClienteSearch.TextChanged -= txtClienteSearch_TextChanged;
+
+                txtClienteSearch.Text = ClienteGlobal.clienteGlobal
+                                        .Where(cliente => cliente.Id == VendaMostra.ClienteId)
+                                        .Select(cliente => cliente.Nome)
+                                        .FirstOrDefault();
+
+                txtClienteSearch.TextChanged += txtClienteSearch_TextChanged;
+
+                chbPreVenda.IsChecked = VendaMostra.PreVenda == 1 ? true : false;
+                cbMetPag.SelectedIndex = VendaMostra.MetodoPagamento;
+                //txtValPag.Text = VendaMostra.MetodoPagamento;
+
+                grdProdVenda.ItemsSource = VendaGlobal.vendaGlobal
+                                            .Where(venda => venda.IdVenda == VendaMostra.IdVenda)
+                                            .ToList();
+
+                float custo = 0.00f;
+                float valorVenda = 0.00f;
+
+                foreach (var produto in grdProdVenda.ItemsSource as IEnumerable<VendaResponse>)
+                {
+                    valorVenda += produto.ValorVenda * produto.Quantidade;
+                    custo += produto.CustoProduto * produto.Quantidade;
+                };
+
+                txtValTotal.Text = valorVenda.ToString("0.00");
+
+                float lucro = valorVenda - custo;
+                lucro = (float)Math.Round(lucro, 2);
+
+                txtValLucro.Text = lucro.ToString("0.00");
 
                 if (tipoTela == "Editar")
                 {
@@ -70,76 +111,52 @@ namespace DesktopLirios
             txtValTotal.IsReadOnly = true;
         }
 
-        private async void btnSalvar_ClickAsync(object sender, RoutedEventArgs e)
+        private VendaRequest CarregaVenda(VendaResponse? VendaMostra)
         {
-            if (tipoTela == "Editar")
-            {
-                if (Venda != null)
-                {
-                    //Venda.Nome = txtNome.Text;
+            VendaRequest VendaEdicao = new VendaRequest();
 
+            VendaEdicao.IdVenda = idVenda;
+            VendaEdicao.ValorVenda = VendaMostra.ValorVenda;
+            VendaEdicao.DtVenda = VendaMostra.DtVenda;
+            VendaEdicao.ClienteId = VendaMostra.ClienteId;
+            VendaEdicao.ProdutoId = VendaMostra.ProdutoId;
+            VendaEdicao.CustoProduto = VendaMostra.CustoProduto;
+            VendaEdicao.MetodoPagamento = VendaMostra.MetodoPagamento;
+            VendaEdicao.Tipo = VendaMostra.Tipo;
+            VendaEdicao.TipoTransacao = VendaMostra.TipoTransacao;
+            VendaEdicao.Quantidade = VendaMostra.Quantidade;
+            VendaEdicao.PreVenda = VendaMostra.PreVenda;
 
-                   // MessageBoxResult resultado = MessageBox.Show($"Você tem certeza que deseja Salvar as Alterações feitas no Venda {Venda.Nome.ToUpper()}?", "Confirmação", MessageBoxButton.YesNo, MessageBoxImage.Question);
-                    //if (resultado == MessageBoxResult.Yes)
-                    //{
-                    //    try
-                    //    {
-                    //        var response = await VendaAPI.VendaApi(Venda, id, "Put", jwtToken);
-                    //    }
-                    //    catch (Exception ex)
-                    //    {
-                    //        MessageBox.Show($"Erro ao carregar dados da API: {ex.Message}");
-                    //    }
-                    //}
-                }
-                else
-                {
-                    MessageBox.Show("Erro ao alterar Venda");
-                }
-            }
-            else
-            {
-                MessageBoxResult resultado = MessageBox.Show("Você tem certeza que deseja Salvar o novo Venda?", "Confirmação", MessageBoxButton.YesNo, MessageBoxImage.Question);
-                if (resultado == MessageBoxResult.Yes)
-                {
-                    try
-                    {
-                        Venda = new VendaRequest();
-
-                        //Venda.Nome = txtNome.Text;
-
-
-                        var response = await VendaAPI.VendaApi(Venda, null, "Post", jwtToken);
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show($"Erro ao carregar dados da API: {ex.Message}");
-                    }
-                }             
-            }
-            Close();
+            return VendaEdicao;
         }
 
-        private void btnExcluirProd_Click(object sender, RoutedEventArgs e)
+        private void CarregaVisualizar()
         {
-            try
-            {
-                MessageBoxResult resultado = MessageBox.Show($"Você tem certeza que deseja Excluir o Produto {((ProdutoResponse)grdProdVenda.SelectedItem).Nome.ToUpper()}?", "Confirmação", MessageBoxButton.YesNo, MessageBoxImage.Question);
+            txtClienteSearch.IsReadOnly = true;
+            txtProdutoSearch.IsReadOnly = true;
+            txtValPag.IsReadOnly = true;
+            btnExcluirProd.IsEnabled = false;
+            txtValTotal.IsReadOnly = true;
+            cbMetPag.IsEnabled = false;
+            txtValLucro.IsReadOnly = true;
+            btnSalvar.IsEnabled = false;
+            chbPreVenda.IsEnabled = false;
+        }
 
-                if (resultado == MessageBoxResult.Yes)
-                {
-                    var produtoARemover = (ProdutoResponse)grdProdVenda.SelectedItem;
-                    produtosFiltrados.Remove(produtoARemover);
-                }
-            }
-            catch (NullReferenceException ex)
-            {
-                MessageBox.Show("Nenhum Produto selecionado!");
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Erro ao excluir Produto: {ex.Message}");
-            }
+        private void CarregaComboBox()
+        {
+            List<ClienteResponse> clienteGlobal = ClienteGlobal.clienteGlobal;
+
+            listaClientes = clienteGlobal
+                .Select(c => new KeyValuePair<int?, ClienteResponse>(c.Id, c))
+                .ToList();
+
+            List<ProdutoResponse> produtoGlobal = ProdutoGlobal.produtoGlobal;
+
+            listaProdutos = produtoGlobal
+                .Select(p => new KeyValuePair<int?, ProdutoResponse>(p.Id, p))
+                .Where(p => p.Value.Quantidade != 0)
+                .ToList();
         }
 
         private void grdProdVenda_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
@@ -185,39 +202,6 @@ namespace DesktopLirios
             }
         }
 
-        private VendaRequest CarregaVenda(VendaResponse? VendaMostra)
-        {
-            VendaRequest VendaEdicao = new VendaRequest();
-
-            //VendaEdicao.Nome = VendaMostra.Nome;
-
-
-            return VendaEdicao;
-        }
-
-        private void CarregaVisualizar()
-        {
-            //txtNome.IsReadOnly = true;
-            //cbOrigem.IsEnabled = false;
-
-        }
-
-        private void CarregaComboBox()
-        {
-            List<ClienteResponse> clienteGlobal = ClienteGlobal.clienteGlobal;
-
-            listaClientes = clienteGlobal
-                .Select(c => new KeyValuePair<int?, ClienteResponse>(c.Id, c))
-                .ToList();
-
-            List<ProdutoResponse> produtoGlobal = ProdutoGlobal.produtoGlobal;
-
-            listaProdutos = produtoGlobal
-                .Select(p => new KeyValuePair<int?, ProdutoResponse>(p.Id, p))
-                .Where(p => p.Value.Quantidade != 0)
-                .ToList();
-        }
-
         private void txtClienteSearch_TextChanged(object sender, TextChangedEventArgs e)
         {
             string filtro = txtClienteSearch.Text.ToLower();
@@ -244,7 +228,7 @@ namespace DesktopLirios
         {
             if (lbClientes.SelectedItem != null && lbClientes.SelectedItem is KeyValuePair<int?, ClienteResponse> selectedItem)
             {
-                id = selectedItem.Key;
+                idCliente = selectedItem.Key;
 
                 txtClienteSearch.Text = selectedItem.Value.Nome;
 
@@ -318,28 +302,97 @@ namespace DesktopLirios
             Panel.SetZIndex(lbProduto, 0);
         }
 
-        private void ConfigureDataGridColumns()
+        private async void btnSalvar_ClickAsync(object sender, RoutedEventArgs e)
         {
-            grdProdVenda.Columns.Clear();
+            try
+            {
+                if (produtosFiltrados.Count > 0)
+                {
+                    List<VendaRequest> vendas = new List<VendaRequest>();
 
-            grdProdVenda.Columns.Add(new DataGridTextColumn { Header = "Id", Binding = new Binding("Id"), IsReadOnly = false, Visibility = Visibility.Collapsed });
-            grdProdVenda.Columns.Add(new DataGridTextColumn { Header = "Quantidade", Binding = new Binding("Quantidade"), IsReadOnly = false });
-            grdProdVenda.Columns.Add(new DataGridTextColumn { Header = "Nome Produto", Binding = new Binding("Nome"), IsReadOnly = true });
-            grdProdVenda.Columns.Add(new DataGridTextColumn { Header = "Valor", Binding = new Binding("ValorVendaRevista"), IsReadOnly = false });
-            grdProdVenda.Columns.Add(new DataGridTextColumn { Header = "SKU", Binding = new Binding("Codigo"), IsReadOnly = true });
-            grdProdVenda.Columns.Add(new DataGridTextColumn { Header = "Código de Barras", Binding = new Binding("CodigoDeBarra"), IsReadOnly = true });
-            grdProdVenda.Columns.Add(new DataGridTextColumn { Header = "Custo", Binding = new Binding("ValorCusto"), IsReadOnly = true });
+                    foreach (var produto in produtosFiltrados)
+                    {
+                        VendaRequest venda = new VendaRequest
+                        {
+                            ValorVenda = produto.ValorVendaRevista,
+                            DtVenda = DateTime.Now,
+                            ClienteId = (int)idCliente,
+                            ProdutoId = produto.Id,
+                            CustoProduto = produto.ValorCusto,
+                            MetodoPagamento = cbMetPag.SelectedIndex,
+                            Tipo = 0,
+                            TipoTransacao = 0,
+                            Quantidade = produto.Quantidade,
+                            PreVenda = (bool)chbPreVenda.IsChecked ? 1 : 0,
+                            CadastradoPor = "fabio.firmino"
+                        };
+
+                        vendas.Add(venda);
+                    }
+
+                    MessageBoxResult resultado;
+
+                    if (tipoTela == "Editar")
+                    {
+                        resultado = MessageBox.Show("Você tem certeza que deseja Salvar as Alterações feitas na Venda?", "Confirmação", MessageBoxButton.YesNo, MessageBoxImage.Question);
+
+                        if (resultado == MessageBoxResult.Yes)
+                        {
+                            var response = await VendaAPI.VendaApi(vendas, idVenda, "Post", jwtToken);
+
+                            if (response != null)
+                            {
+                                MessageBox.Show("Venda cadastrada com Sucesso!.", "Venda Finalizada", MessageBoxButton.OK, MessageBoxImage.Information);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        resultado = MessageBox.Show("Você tem certeza que deseja Salvar a nova venda?", "Confirmação", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                        if (resultado == MessageBoxResult.Yes)
+                        {
+                            var response = await VendaAPI.VendaApi(vendas, null, "Post", jwtToken);
+
+                            if (response != null)
+                            {
+                                MessageBox.Show("Venda cadastrada com Sucesso!.", "Venda Finalizada", MessageBoxButton.OK, MessageBoxImage.Information);
+                            }
+                        }
+                    }                    
+                }
+                else
+                {
+                    MessageBox.Show("Nenhum produto na venda. Adicione pelo menos um produto para salvar a venda.", "Aviso", MessageBoxButton.OK, MessageBoxImage.Warning);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Erro ao carregar dados da API: {ex.Message}");
+            }
+
+            Close();
         }
 
-        private void cbMetPag_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            txtValPag.Visibility = Visibility.Collapsed;
-            lblValPag.Visibility = Visibility.Collapsed;
 
-            if (cbMetPag.SelectedIndex != 0)
+        private void btnExcluirProd_Click(object sender, RoutedEventArgs e)
+        {
+            try
             {
-                txtValPag.Visibility = Visibility.Visible;
-                lblValPag.Visibility = Visibility.Visible;
+                MessageBoxResult resultado = MessageBox.Show($"Você tem certeza que deseja Excluir o Produto {((ProdutoResponse)grdProdVenda.SelectedItem).Nome.ToUpper()}?", "Confirmação", MessageBoxButton.YesNo, MessageBoxImage.Question);
+
+                if (resultado == MessageBoxResult.Yes)
+                {
+                    var produtoARemover = (ProdutoResponse)grdProdVenda.SelectedItem;
+                    produtosFiltrados.Remove(produtoARemover);
+                }
+            }
+            catch (NullReferenceException ex)
+            {
+                MessageBox.Show("Nenhum Produto selecionado!");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Erro ao excluir Produto: {ex.Message}");
             }
         }
 
@@ -383,11 +436,11 @@ namespace DesktopLirios
 
             txtValLucro.Text = lucro.ToString("0.00");
 
-            if (cbParcelas.IsVisible) {
+            if (cbParcelas.IsVisible)
+            {
 
                 List<object> listaParcelas = new List<object>
                 {
-                    new { Quantidade = 1, ValorParcela = Math.Round((valorVenda), 2) },
                     new { Quantidade = 2, ValorParcela = Math.Round((valorVenda / 2), 2) },
                     new { Quantidade = 3, ValorParcela = Math.Round((valorVenda / 3), 2) },
                     new { Quantidade = 4, ValorParcela = Math.Round((valorVenda / 4), 2) },
@@ -401,6 +454,66 @@ namespace DesktopLirios
 
                 cbParcelas.ItemsSource = listaParcelas;
             }
+        }
+
+        private void ConfigureDataGridColumns()
+        {
+            grdProdVenda.Columns.Clear();
+
+            grdProdVenda.Columns.Add(new DataGridTextColumn { Header = "Id", Binding = new Binding("Id"), IsReadOnly = false, Visibility = Visibility.Collapsed });
+            grdProdVenda.Columns.Add(new DataGridTextColumn { Header = "Quantidade", Binding = new Binding("Quantidade"), IsReadOnly = false });
+            grdProdVenda.Columns.Add(new DataGridTextColumn { Header = "Nome Produto", Binding = new Binding("Nome"), IsReadOnly = true });
+            grdProdVenda.Columns.Add(new DataGridTextColumn { Header = "Valor", Binding = new Binding("ValorVendaRevista"), IsReadOnly = false });
+            grdProdVenda.Columns.Add(new DataGridTextColumn { Header = "SKU", Binding = new Binding("Codigo"), IsReadOnly = true });
+            grdProdVenda.Columns.Add(new DataGridTextColumn { Header = "Código de Barras", Binding = new Binding("CodigoDeBarra"), IsReadOnly = true });
+            grdProdVenda.Columns.Add(new DataGridTextColumn { Header = "Custo", Binding = new Binding("ValorCusto"), IsReadOnly = true });
+        }
+
+        private void cbMetPag_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            txtValPag.Visibility = Visibility.Collapsed;
+            lblValPag.Visibility = Visibility.Collapsed;
+            cbParcelas.Visibility = Visibility.Collapsed;
+            lbParcelas.Visibility = Visibility.Collapsed;
+
+            if (cbMetPag.SelectedIndex != 0)
+            {
+                txtValPag.Visibility = Visibility.Visible;
+                lblValPag.Visibility = Visibility.Visible;
+            }
+
+            if (cbMetPag.SelectedIndex == 5 || cbMetPag.SelectedIndex == 6)
+            {
+                cbParcelas.Visibility = Visibility.Visible;
+                lbParcelas.Visibility = Visibility.Visible;
+
+                CarregaTotaleLucro(null, null, null);
+            }
+        }    
+
+        public void SetTxtClienteSearch(string value)
+        {
+            txtClienteSearch.Text = value;
+        }
+
+        private void chbPreVenda_Checked(object sender, RoutedEventArgs e)
+        {
+            List<ProdutoResponse> produtoGlobal = ProdutoGlobal.produtoGlobal;
+
+            listaProdutos = produtoGlobal
+                .Select(p => new KeyValuePair<int?, ProdutoResponse>(p.Id, p)).ToList();
+
+        }
+
+        private void chbPreVenda_Unchecked(object sender, RoutedEventArgs e)
+        {
+            List<ProdutoResponse> produtoGlobal = ProdutoGlobal.produtoGlobal;
+
+            listaProdutos = produtoGlobal
+                .Select(p => new KeyValuePair<int?, ProdutoResponse>(p.Id, p))
+                .Where(p => p.Value.Quantidade != 0)
+                .ToList();
+
         }
     }
 }

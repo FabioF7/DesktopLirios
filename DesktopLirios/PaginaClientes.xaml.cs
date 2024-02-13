@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using DesktopLirios.API_Services;
+using DesktopLirios.Common;
 using DesktopLirios.Requests;
 using DesktopLirios.Responses;
 using Newtonsoft.Json;
@@ -33,6 +34,8 @@ namespace DesktopLirios
 
                 List<ClienteResponse> clientes = JsonConvert.DeserializeObject<List<ClienteResponse>>(response);
 
+                ClienteGlobal.clienteGlobal = JsonConvert.DeserializeObject<List<ClienteResponse>>(response);
+                
                 listaClientes = JsonConvert.DeserializeObject<List<ClienteResponse>>(response);
 
                 grdClientes.ItemsSource = clientes;

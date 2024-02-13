@@ -4,7 +4,7 @@ namespace DesktopLirios.Responses
 {
     public class VendaResponse
     {
-        public int Id { get; set; }
+        public int IdVenda { get; set; }
         public float ValorVenda { get; set; }
         public DateTime DtVenda { get; set; }
         public int ClienteId { get; set; }
@@ -14,6 +14,7 @@ namespace DesktopLirios.Responses
         public int Tipo { get; set; }
         public int TipoTransacao { get; set; }
         public string? CadastradoPor { get; set; }
+        public int Quantidade { get; set; }
         public int? PreVenda { get; set; }
         public string? AlteradoPor { get; set; }
         public DateTime? DtAlteracao { get; set; }

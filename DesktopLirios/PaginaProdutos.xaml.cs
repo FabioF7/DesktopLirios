@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using DesktopLirios.API_Services;
+using DesktopLirios.Common;
 using DesktopLirios.Requests;
 using DesktopLirios.Responses;
 using Newtonsoft.Json;
@@ -32,6 +33,8 @@ namespace DesktopLirios
                 var response = await ProdutoAPI.ProdutoApi(null, null, "Get", jwtToken);
 
                 List<ProdutoResponse> produtos = JsonConvert.DeserializeObject<List<ProdutoResponse>>(response);
+
+                ProdutoGlobal.produtoGlobal = JsonConvert.DeserializeObject<List<ProdutoResponse>>(response);
 
                 listaProdutos = JsonConvert.DeserializeObject<List<ProdutoResponse>>(response);
 

@@ -1,6 +1,7 @@
 ﻿using DesktopLirios.API_Services;
 using DesktopLirios.Requests;
 using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Security;
@@ -10,7 +11,7 @@ using System.Threading.Tasks;
 
 class VendaAPI
 {
-    public static async Task<string?> VendaApi(VendaRequest? VendaRequest, int? id, string tipoApi, SecureString jwtToken)
+    public static async Task<string?> VendaApi(List<VendaRequest>? VendaRequest, int? id, string tipoApi, SecureString jwtToken)
     {
         using (HttpClient client = new HttpClient())
         {
@@ -18,7 +19,7 @@ class VendaAPI
             {
                 HttpResponseMessage response = new HttpResponseMessage();
 
-                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", ObterTokenSecure(jwtToken));
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", AppConfig.ObterTokenSecure(jwtToken));
 
                 string jsonContent = JsonSerializer.Serialize(VendaRequest);
 
@@ -52,22 +53,7 @@ class VendaAPI
             {
                 Console.WriteLine($"Erro na chamada da API: {ex.Message}");
                 return null;
-            }
-        }
-    }
-
-    private static string ObterTokenSecure(SecureString jwtToken)
-    {
-        IntPtr valuePtr = IntPtr.Zero;
-
-        try
-        {
-            valuePtr = System.Runtime.InteropServices.Marshal.SecureStringToGlobalAllocUnicode(jwtToken);
-            return System.Runtime.InteropServices.Marshal.PtrToStringUni(valuePtr);
-        }
-        finally
-        {
-            System.Runtime.InteropServices.Marshal.ZeroFreeGlobalAllocUnicode(valuePtr);
+            }   
         }
     }
 }

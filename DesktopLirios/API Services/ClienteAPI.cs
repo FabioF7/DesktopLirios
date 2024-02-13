@@ -20,7 +20,7 @@ class ClienteAPI
             {
                 HttpResponseMessage response = new HttpResponseMessage();
 
-                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", ObterTokenSecure(jwtToken));
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", AppConfig.ObterTokenSecure(jwtToken));
 
                 string jsonContent = JsonSerializer.Serialize(clienteRequest);
 
@@ -53,21 +53,6 @@ class ClienteAPI
                 Console.WriteLine($"Erro na chamada da API: {ex.Message}");
                 return null;
             }
-        }
-    }
-
-    private static string ObterTokenSecure(SecureString jwtToken)
-    {
-        IntPtr valuePtr = IntPtr.Zero;
-
-        try
-        {
-            valuePtr = System.Runtime.InteropServices.Marshal.SecureStringToGlobalAllocUnicode(jwtToken);
-            return System.Runtime.InteropServices.Marshal.PtrToStringUni(valuePtr);
-        }
-        finally
-        {
-            System.Runtime.InteropServices.Marshal.ZeroFreeGlobalAllocUnicode(valuePtr);
         }
     }
 }
