@@ -41,7 +41,7 @@ namespace DesktopLirios
             Top = (screenHeight - windowHeight) / 2;
         }
 
-        private async void btnAcessar_Click(object sender, RoutedEventArgs e)
+        private async void loginUsuario()
         {
             var response = await LoginAPI.LoginApi(new LoginRequest { Usuario = txUsuario.Text, Senha = txSenha.Password });
 
@@ -68,6 +68,20 @@ namespace DesktopLirios
             }
 
             return jwtToken;
+        }
+
+        private async void btnAcessar_Click(object sender, RoutedEventArgs e)
+        {
+            loginUsuario();
+        }
+
+        private void Window_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                loginUsuario();
+                e.Handled = true;
+            }
         }
     }
 }

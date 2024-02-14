@@ -7,7 +7,7 @@
     Background="White">
 
     <Grid x:Name="grdTelaVendas" Width="1000" Height="700">
-
+        
         <Button x:Name="btnBuscar" Content="Pesquisar" HorizontalAlignment="Left" Height="32" Margin="890,22,0,0" VerticalAlignment="Top" Width="100" Click="btnBuscar_Click" FontSize="10" FontWeight="Bold"/>
 
         <DataGrid x:Name="grdVendas" HorizontalAlignment="Center" Height="482" VerticalAlignment="Top" Width="980" av:ItemsSource="{av:SampleData ItemCount=5}" Margin="0,75,0,0"/>

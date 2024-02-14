@@ -1,0 +1,12 @@
+﻿<Window
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:av="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="av" x:Class="DesktopLirios.FormularioHistoricoClientePopup"
+        Height="auto" Width="auto">
+
+    <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Height="700" Width="800">
+
+        <DataGrid x:Name="grdHistorico" av:ItemsSource="{av:SampleData ItemCount=5}" Margin="0,100,0,0" HorizontalAlignment="Center" VerticalAlignment="Top" Width="780" Height="530"/>
+
+    </Grid>
+</Window>

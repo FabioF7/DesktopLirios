@@ -15,6 +15,7 @@ namespace DesktopLirios
     public partial class MenuPrincipal : Window
     {
         private SecureString jwtToken;
+
         public MenuPrincipal(SecureString token)
         {
             InitializeComponent();
@@ -126,7 +127,7 @@ namespace DesktopLirios
         {
             try
             {
-                var response = await VendaAPI.VendaApi(null, null, "Get", jwtToken);
+                var response = await VendaAPI.VendaApi(null, null, "Get", null, jwtToken);
 
                 VendaGlobal.vendaGlobal = JsonConvert.DeserializeObject<List<VendaResponse>>(response);
 

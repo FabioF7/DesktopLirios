@@ -34,15 +34,15 @@
         <Button x:Name="btnSalvar" Content="Salvar" Click="btnSalvar_ClickAsync" Height="22" Width="62" Margin="500,250,18,14" FontWeight="Bold" FontSize="10"/>
         <TextBlock Text="Inadimplente?:" VerticalAlignment="Top" Width="85" Margin="10,157,0,0" FontWeight="Bold" Height="21" HorizontalAlignment="Left"/>
         <CheckBox x:Name="cbSim" Content="Sim" HorizontalAlignment="Left" Height="22" Margin="100,158,0,0" VerticalAlignment="Top" Width="55"/>
-        <TextBlock Text="Limite Inadimplencia:" VerticalAlignment="Top" Width="126" Margin="364,157,0,0" FontWeight="Bold" Height="21" HorizontalAlignment="Left"/>
+        <TextBlock Text="Limite:" VerticalAlignment="Top" Width="51" Margin="439,157,0,0" FontWeight="Bold" Height="21" HorizontalAlignment="Left"/>
         <TextBox x:Name="txtLimite" HorizontalAlignment="Left" Height="21" Margin="495,157,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="75"/>
         <TextBlock Text="Observações:" VerticalAlignment="Top" Width="80" Margin="10,192,0,0" FontWeight="Bold" Height="21" HorizontalAlignment="Left"/>
         <TextBox x:Name="txtObservacao" Width="475" Height="44" Margin="95,192,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-        <TextBox x:Name="txtValDivida" HorizontalAlignment="Center" Height="22" Margin="0,154,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="118"/>
-        <Label Content="Valor Divida:" HorizontalAlignment="Left" Margin="144,152,0,0" VerticalAlignment="Top" FontWeight="Bold"/>
+        <TextBox x:Name="txtValDivida" HorizontalAlignment="Left" Height="22" Margin="273,157,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="118"/>
+        <Label Content="Valor Divida:" HorizontalAlignment="Left" Margin="186,152,0,0" VerticalAlignment="Top" FontWeight="Bold"/>
         <TextBox x:Name="txtPagou" HorizontalAlignment="Left" Height="22" Margin="55,250,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="60"/>
         <Label x:Name="lblPagou" Content="Pagou:" HorizontalAlignment="Left" Height="22" Margin="10,250,0,0" VerticalAlignment="Top" Width="40" FontSize="9" FontWeight="Bold"/>
-        <Button x:Name="btnOk" Content="OK" HorizontalAlignment="Left" Height="22" Margin="120,250,0,0" VerticalAlignment="Top" Width="20" FontSize="8" FontWeight="Bold"/>
+        <Button x:Name="btnOk" Content="OK" HorizontalAlignment="Left" Height="22" Margin="120,250,0,0" VerticalAlignment="Top" Width="20" FontSize="8" FontWeight="Bold" Click="btnOk_ClickAsync"/>
         <Button x:Name="btnVenda" Content="Venda" HorizontalAlignment="Left" Height="22" Margin="433,250,0,0" VerticalAlignment="Top" Width="62" FontWeight="Bold" FontSize="10" Click="btnVenda_Click"/>
         <Button x:Name="btnHistorico" Content="Historico" HorizontalAlignment="Left" Height="22" Margin="366,250,0,0" VerticalAlignment="Top" Width="62" FontWeight="Bold" FontSize="10" Click="btnHistorico_Click"/>
     </Grid>

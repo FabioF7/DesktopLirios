@@ -11,6 +11,7 @@ using System.Collections.ObjectModel;
 using System.Windows.Data;
 using Newtonsoft.Json;
 using System.Security.Claims;
+using System.Globalization;
 
 namespace DesktopLirios
 {
@@ -72,6 +73,8 @@ namespace DesktopLirios
                 cbMetPag.SelectedIndex = VendaMostra.MetodoPagamento;
                 //txtValPag.Text = VendaMostra.MetodoPagamento;
 
+                ConfigureDataGridColumns();
+
                 grdProdVenda.ItemsSource = VendaGlobal.vendaGlobal
                                             .Where(venda => venda.IdVenda == VendaMostra.IdVenda)
                                             .ToList();
@@ -109,6 +112,66 @@ namespace DesktopLirios
 
             txtValLucro.IsReadOnly = true;
             txtValTotal.IsReadOnly = true;
+        }
+
+        private void ConfigureDataGridColumns()
+        {
+            grdProdVenda.AutoGenerateColumns = false;
+
+            grdProdVenda.Columns.Clear();
+
+            DataGridTextColumn colunaVenda = new DataGridTextColumn();
+            colunaVenda.Header = "Id Venda";
+            colunaVenda.Binding = new Binding("IdVenda");
+            grdProdVenda.Columns.Add(colunaVenda);
+
+            DataGridTextColumn colunaCliente = new DataGridTextColumn();
+            colunaCliente.Header = "Cliente";
+            colunaCliente.Binding = new Binding("Cliente.Nome");
+            grdProdVenda.Columns.Add(colunaCliente);
+
+            DataGridTextColumn colunaProduto = new DataGridTextColumn();
+            colunaProduto.Header = "Produto";
+            colunaProduto.Binding = new Binding("Produto.Nome");
+            grdProdVenda.Columns.Add(colunaProduto);
+
+            DataGridTextColumn colunaValorVenda = new DataGridTextColumn();
+            colunaValorVenda.Header = "Valor da Venda";
+            colunaValorVenda.Binding = new Binding("ValorVenda") { StringFormat = "{0:0.00}", ConverterCulture = new CultureInfo("pt-BR") };
+            grdProdVenda.Columns.Add(colunaValorVenda);
+
+            DataGridTextColumn colunaCusto = new DataGridTextColumn();
+            colunaCusto.Header = "Custo Produto";
+            colunaCusto.Binding = new Binding("CustoProduto") { StringFormat = "{0:0.00}", ConverterCulture = new CultureInfo("pt-BR") };
+            grdProdVenda.Columns.Add(colunaCusto);
+
+            DataGridTextColumn colunaQuantidade = new DataGridTextColumn();
+            colunaQuantidade.Header = "Quantidade";
+            colunaQuantidade.Binding = new Binding("Quantidade");
+            grdProdVenda.Columns.Add(colunaQuantidade);
+
+            DataGridTextColumn colunaData = new DataGridTextColumn();
+            colunaData.Header = "Data Venda";
+            colunaData.Binding = new Binding("DtVenda") { StringFormat = "dd/MM/yyyy" };
+            grdProdVenda.Columns.Add(colunaData);
+
+            DataGridTextColumn colunaMetodo = new DataGridTextColumn();
+            colunaMetodo.Header = "Método de Pagamento";
+            colunaMetodo.Binding = new Binding("MetodoPagamento")
+            {
+                Converter = new MetodoPagamentoConverter()
+            };
+            grdProdVenda.Columns.Add(colunaMetodo);
+
+            DataGridTextColumn colunaTipo = new DataGridTextColumn();
+            colunaTipo.Header = "Tipo";
+            colunaTipo.Binding = new Binding("Tipo");
+            grdProdVenda.Columns.Add(colunaTipo);
+
+            DataGridTextColumn colunaTransacao = new DataGridTextColumn();
+            colunaTransacao.Header = "Tipo Transação";
+            colunaTransacao.Binding = new Binding("TipoTransacao");
+            grdProdVenda.Columns.Add(colunaTransacao);
         }
 
         private VendaRequest CarregaVenda(VendaResponse? VendaMostra)
@@ -289,7 +352,7 @@ namespace DesktopLirios
 
                 if (grdProdVenda.Items.Count <= 2)
                 {
-                    ConfigureDataGridColumns();
+                    ConfigureDataGridColumnsProduto();
                 }
 
                 CarregaTotaleLucro(null, null, null);
@@ -338,7 +401,7 @@ namespace DesktopLirios
 
                         if (resultado == MessageBoxResult.Yes)
                         {
-                            var response = await VendaAPI.VendaApi(vendas, idVenda, "Post", jwtToken);
+                            var response = await VendaAPI.VendaApi(vendas, idVenda, "Post", null, jwtToken);
 
                             if (response != null)
                             {
@@ -351,7 +414,7 @@ namespace DesktopLirios
                         resultado = MessageBox.Show("Você tem certeza que deseja Salvar a nova venda?", "Confirmação", MessageBoxButton.YesNo, MessageBoxImage.Question);
                         if (resultado == MessageBoxResult.Yes)
                         {
-                            var response = await VendaAPI.VendaApi(vendas, null, "Post", jwtToken);
+                            var response = await VendaAPI.VendaApi(vendas, null, "Post", txtValPag.Text, jwtToken);
 
                             if (response != null)
                             {
@@ -423,8 +486,8 @@ namespace DesktopLirios
                 {
                     if (item is ProdutoResponse produtoOutro)
                     {
-                        valorVenda += produtoOutro.ValorVendaRevista;
-                        custo += produtoOutro.ValorCusto;
+                        valorVenda += (produtoOutro.ValorVendaRevista * produtoOutro.Quantidade);
+                        custo += (produtoOutro.ValorCusto * produtoOutro.Quantidade);
                     }
                 }
             }
@@ -456,17 +519,19 @@ namespace DesktopLirios
             }
         }
 
-        private void ConfigureDataGridColumns()
+        private void ConfigureDataGridColumnsProduto()
         {
+            grdProdVenda.AutoGenerateColumns = false;
+
             grdProdVenda.Columns.Clear();
 
             grdProdVenda.Columns.Add(new DataGridTextColumn { Header = "Id", Binding = new Binding("Id"), IsReadOnly = false, Visibility = Visibility.Collapsed });
             grdProdVenda.Columns.Add(new DataGridTextColumn { Header = "Quantidade", Binding = new Binding("Quantidade"), IsReadOnly = false });
             grdProdVenda.Columns.Add(new DataGridTextColumn { Header = "Nome Produto", Binding = new Binding("Nome"), IsReadOnly = true });
-            grdProdVenda.Columns.Add(new DataGridTextColumn { Header = "Valor", Binding = new Binding("ValorVendaRevista"), IsReadOnly = false });
+            grdProdVenda.Columns.Add(new DataGridTextColumn { Header = "Valor", Binding = new Binding("ValorVendaRevista") { StringFormat = "{0:0.00}", ConverterCulture = new CultureInfo("pt-BR") }, IsReadOnly = false });
             grdProdVenda.Columns.Add(new DataGridTextColumn { Header = "SKU", Binding = new Binding("Codigo"), IsReadOnly = true });
             grdProdVenda.Columns.Add(new DataGridTextColumn { Header = "Código de Barras", Binding = new Binding("CodigoDeBarra"), IsReadOnly = true });
-            grdProdVenda.Columns.Add(new DataGridTextColumn { Header = "Custo", Binding = new Binding("ValorCusto"), IsReadOnly = true });
+            grdProdVenda.Columns.Add(new DataGridTextColumn { Header = "Custo", Binding = new Binding("ValorCusto") { StringFormat = "{0:0.00}", ConverterCulture = new CultureInfo("pt-BR") }, IsReadOnly = true });
         }
 
         private void cbMetPag_SelectionChanged(object sender, SelectionChangedEventArgs e)

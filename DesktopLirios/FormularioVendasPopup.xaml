@@ -42,7 +42,17 @@
         <TextBox x:Name="txtValLucro" Width="65" Height="21" Margin="52,352,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
         <TextBlock Text="Produto:" VerticalAlignment="Top" Width="52" FontWeight="Bold" Height="21" HorizontalAlignment="Left" Margin="10,47,0,0" RenderTransformOrigin="0.225,-1.522"/>
         <TextBox x:Name="txtProdutoSearch" Width="591" Height="21" Margin="67,47,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" TextChanged="txtProdutoSearch_TextChanged"/>
-        <ListBox x:Name="lbProduto" DisplayMemberPath="Value.Nome" Margin="67,68,0,0" Width="591" Height="40" HorizontalAlignment="Left" VerticalAlignment="Top" SelectionChanged="lbProduto_SelectionChanged" Visibility="Collapsed"/>
+        <ListBox x:Name="lbProduto" Margin="67,68,0,0" Width="591" Height="40" HorizontalAlignment="Left" VerticalAlignment="Top" SelectionChanged="lbProduto_SelectionChanged" Visibility="Collapsed">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock>
+                        <Run Text="{Binding Value.Nome}" />
+                        <Run Text=" - " />
+                        <Run Text="{Binding Value.Quantidade}" />
+                    </TextBlock>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
         <ComboBox x:Name="cbParcelas" Width="160" Height="21" Margin="473,315,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" SelectionChanged="cbMetPag_SelectionChanged" Visibility="Collapsed"></ComboBox>
         <TextBlock x:Name="lbParcelas" Text="Parcelas:" VerticalAlignment="Top" Width="52" Margin="416,315,0,0" Height="21" FontWeight="Bold" HorizontalAlignment="Left" Visibility="Collapsed"/>
     </Grid>

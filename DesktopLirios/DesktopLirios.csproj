@@ -16,6 +16,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="FormularioHistoricoClientePopup.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="FormularioVendasPopup.xaml.cs">
       <SubType>Code</SubType>
     </Compile>

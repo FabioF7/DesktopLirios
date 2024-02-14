@@ -8,7 +8,9 @@ namespace DesktopLirios.Responses
         public float ValorVenda { get; set; }
         public DateTime DtVenda { get; set; }
         public int ClienteId { get; set; }
+        public ClienteResponse Cliente { get; set; }
         public int ProdutoId { get; set; }
+        public ProdutoResponse Produto { get; set; }
         public float CustoProduto { get; set; }  
         public int MetodoPagamento { get; set; }
         public int Tipo { get; set; }
@@ -18,6 +20,5 @@ namespace DesktopLirios.Responses
         public int? PreVenda { get; set; }
         public string? AlteradoPor { get; set; }
         public DateTime? DtAlteracao { get; set; }
-  
     }
 }

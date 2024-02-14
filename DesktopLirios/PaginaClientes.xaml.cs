@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Globalization;
 using System.Linq;
 using System.Security;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using DesktopLirios.API_Services;
 using DesktopLirios.Common;
 using DesktopLirios.Requests;
@@ -17,7 +20,6 @@ namespace DesktopLirios
     {
         private SecureString jwtToken;
         private ClienteResponse? Cliente;
-        private List<ClienteResponse> listaClientes;
 
         public PaginaClientes(SecureString token)
         {
@@ -32,13 +34,11 @@ namespace DesktopLirios
             {
                 var response = await ClienteAPI.ClienteApi(null, null, "Get", jwtToken);
 
-                List<ClienteResponse> clientes = JsonConvert.DeserializeObject<List<ClienteResponse>>(response);
-
                 ClienteGlobal.clienteGlobal = JsonConvert.DeserializeObject<List<ClienteResponse>>(response);
-                
-                listaClientes = JsonConvert.DeserializeObject<List<ClienteResponse>>(response);
 
-                grdClientes.ItemsSource = clientes;
+                ConfigureDataGridColumns();
+
+                grdClientes.ItemsSource = ClienteGlobal.clienteGlobal;
             }
             catch (Exception ex)
             {
@@ -46,11 +46,67 @@ namespace DesktopLirios
             }
         }
 
+        private void ConfigureDataGridColumns()
+        {
+            grdClientes.AutoGenerateColumns = false;
+
+            grdClientes.Columns.Clear();
+
+            DataGridTextColumn colunaNome = new DataGridTextColumn();
+            colunaNome.Header = "Nome";
+            colunaNome.Binding = new Binding("Nome");
+            grdClientes.Columns.Add(colunaNome);
+
+            //DataGridTextColumn colunaDevido = new DataGridTextColumn();
+            //colunaDevido.Header = "Valor Devido";
+            //colunaDevido.Binding = new Binding("Devido") { StringFormat = "{0:0.00}", ConverterCulture = new CultureInfo("pt-BR") };
+            //grdClientes.Columns.Add(colunaDevido);
+
+            //DataGridTextColumn colunaLimite = new DataGridTextColumn();
+            //colunaLimite.Header = "Limite Livre";
+            //colunaLimite.Binding = new Binding("Livre"){ StringFormat = "{0:0.00}", ConverterCulture = new CultureInfo("pt-BR") };
+            //grdClientes.Columns.Add(colunaLimite);
+
+            DataGridTextColumn colunaCelular = new DataGridTextColumn();
+            colunaCelular.Header = "Celular";
+            colunaCelular.Binding = new Binding("Celular");
+            grdClientes.Columns.Add(colunaCelular);
+
+            DataGridTextColumn colunaNascimento = new DataGridTextColumn();
+            colunaNascimento.Header = "Data Nascimento";
+            colunaNascimento.Binding = new Binding("DtNascimento") { StringFormat = "dd/MM/yyyy" };
+            grdClientes.Columns.Add(colunaNascimento);
+
+            DataGridTextColumn colunaIndicacao = new DataGridTextColumn();
+            colunaIndicacao.Header = "Indicação";
+            colunaIndicacao.Binding = new Binding("Indicacao");
+            grdClientes.Columns.Add(colunaIndicacao);
+
+            //DataGridTextColumn colunaBloqueado = new DataGridTextColumn();
+            //colunaBloqueado.Header = "Bloqueado";
+            //colunaBloqueado.Binding = new Binding("Bloqueado");
+            //grdClientes.Columns.Add(colunaBloqueado);
+
+            DataGridTextColumn colunaInandinplente = new DataGridTextColumn();
+            colunaInandinplente.Header = "Inandinplente";
+            colunaInandinplente.Binding = new Binding("Inadimplencia");
+            grdClientes.Columns.Add(colunaInandinplente);
+
+            DataGridTextColumn colunaLimiteTotal = new DataGridTextColumn();
+            colunaLimiteTotal.Header = "Limite";
+            colunaLimiteTotal.Binding = new Binding("LimiteInadimplencia") { StringFormat = "{0:0.00}", ConverterCulture = new CultureInfo("pt-BR") };
+            grdClientes.Columns.Add(colunaLimiteTotal);
+
+            DataGridTextColumn colunaObservacoes = new DataGridTextColumn();
+            colunaObservacoes.Header = "Observações";
+            colunaObservacoes.Binding = new Binding("Observacoes");
+            grdClientes.Columns.Add(colunaObservacoes);
+
+        }
         private void txtPesquisar_TextChanged(object sender, TextChangedEventArgs e)
         {
             string termoPesquisa = txtPesquisar.Text.ToLower();
-
-            List<ClienteResponse> clientesFiltrados = listaClientes
+            List<ClienteResponse> clientesFiltrados = ClienteGlobal.clienteGlobal
             .Where(cliente =>
                 cliente.Nome.ToLower().Contains(termoPesquisa) ||
                 cliente.Celular.ToString().Contains(termoPesquisa))
@@ -61,7 +117,7 @@ namespace DesktopLirios
 
         private void cbInad_Checked(object sender, RoutedEventArgs e)
         {
-            List<ClienteResponse> clientesFiltrados = listaClientes
+            List<ClienteResponse> clientesFiltrados = ClienteGlobal.clienteGlobal
                 .Where(cliente => cliente.Inadimplencia == 1)
                 .ToList();
 
@@ -70,7 +126,7 @@ namespace DesktopLirios
 
         private void cbInad_Unchecked(object sender, RoutedEventArgs e)
         {
-            List<ClienteResponse> clientesFiltrados = listaClientes
+            List<ClienteResponse> clientesFiltrados = ClienteGlobal.clienteGlobal
                 .Where(cliente => cliente.Inadimplencia == 0)
                 .ToList();
 

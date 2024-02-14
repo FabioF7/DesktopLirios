@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Security;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using DesktopLirios.API_Services;
 using DesktopLirios.Common;
 using DesktopLirios.Requests;
@@ -17,7 +19,6 @@ namespace DesktopLirios
     {
         private SecureString jwtToken;
         private ProdutoResponse? Produto;
-        private List<ProdutoResponse> listaProdutos;
 
         public PaginaProdutos(SecureString token)
         {
@@ -32,13 +33,11 @@ namespace DesktopLirios
             {
                 var response = await ProdutoAPI.ProdutoApi(null, null, "Get", jwtToken);
 
-                List<ProdutoResponse> produtos = JsonConvert.DeserializeObject<List<ProdutoResponse>>(response);
-
                 ProdutoGlobal.produtoGlobal = JsonConvert.DeserializeObject<List<ProdutoResponse>>(response);
 
-                listaProdutos = JsonConvert.DeserializeObject<List<ProdutoResponse>>(response);
+                ConfigureDataGridColumns();
 
-                grdProdutos.ItemsSource = produtos;
+                grdProdutos.ItemsSource = ProdutoGlobal.produtoGlobal;
             }
             catch (Exception ex)
             {
@@ -46,11 +45,74 @@ namespace DesktopLirios
             }
         }
 
+        private void ConfigureDataGridColumns()
+        {
+            grdProdutos.AutoGenerateColumns = false;
+
+            grdProdutos.Columns.Clear();
+
+            DataGridTextColumn colunaId = new DataGridTextColumn();
+            colunaId.Header = "Id Produto";
+            colunaId.Binding = new Binding("Id");
+            grdProdutos.Columns.Add(colunaId);
+
+            DataGridTextColumn colunaNome = new DataGridTextColumn();
+            colunaNome.Header = "Nome";
+            colunaNome.Binding = new Binding("Nome");
+            grdProdutos.Columns.Add(colunaNome);
+
+            DataGridTextColumn colunaCusto = new DataGridTextColumn();
+            colunaCusto.Header = "Valor Custo";
+            colunaCusto.Binding = new Binding("ValorCusto") { StringFormat = "{0:0.00}", ConverterCulture = new CultureInfo("pt-BR") };
+            grdProdutos.Columns.Add(colunaCusto);
+
+            DataGridTextColumn colunaValorVenda = new DataGridTextColumn();
+            colunaValorVenda.Header = "Valor Venda";
+            colunaValorVenda.Binding = new Binding("ValorVendaRevista") { StringFormat = "{0:0.00}", ConverterCulture = new CultureInfo("pt-BR") };
+            grdProdutos.Columns.Add(colunaValorVenda);
+
+            DataGridTextColumn colunaQuantidade = new DataGridTextColumn();
+            colunaQuantidade.Header = "Quantidade";
+            colunaQuantidade.Binding = new Binding("Quantidade");
+            grdProdutos.Columns.Add(colunaQuantidade);
+
+            DataGridTextColumn colunaOrigem = new DataGridTextColumn();
+            colunaOrigem.Header = "Origem";
+            colunaOrigem.Binding = new Binding("OrigemId")
+            {
+                Converter = new OrigemConverter()
+            };
+            grdProdutos.Columns.Add(colunaOrigem);
+
+            DataGridTextColumn colunaSKU = new DataGridTextColumn();
+            colunaSKU.Header = "SKU";
+            colunaSKU.Binding = new Binding("Codigo");
+            grdProdutos.Columns.Add(colunaSKU);
+
+            DataGridTextColumn colunaBarra = new DataGridTextColumn();
+            colunaBarra.Header = "Codigo de Barra";
+            colunaBarra.Binding = new Binding("CodigoDeBarra");
+            grdProdutos.Columns.Add(colunaBarra);
+
+            DataGridTextColumn colunaCategoria = new DataGridTextColumn();
+            colunaCategoria.Header = "Categoria";
+            colunaCategoria.Binding = new Binding("IdCategoria");
+            {
+                //Converter = new CategoriaConverter()
+            };
+            grdProdutos.Columns.Add(colunaCategoria);
+
+            DataGridTextColumn colunaAtivo = new DataGridTextColumn();
+            colunaAtivo.Header = "Ativo";
+            colunaAtivo.Binding = new Binding("Ativo");
+            grdProdutos.Columns.Add(colunaAtivo);
+        }
+
         private void txtPesquisar_TextChanged(object sender, TextChangedEventArgs e)
         {
             string termoPesquisa = txtPesquisar.Text.ToLower();
 
-            List<ProdutoResponse> produtosFiltrados = listaProdutos
+            List<ProdutoResponse> produtosFiltrados = ProdutoGlobal.produtoGlobal
             .Where(produto =>
                 produto.Nome.ToLower().Contains(termoPesquisa) ||
                 produto.Codigo.ToString().ToLower().Contains(termoPesquisa) ||

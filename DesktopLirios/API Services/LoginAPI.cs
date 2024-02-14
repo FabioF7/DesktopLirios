@@ -15,7 +15,7 @@ class LoginAPI
         {
             try
             {
-                string uri = "http://localhost:8080/api/Usuario/Login";
+                string uri = "https://sistemalirios.azurewebsites.net/api/Usuario/Login";
 
                 string jsonContent = JsonSerializer.Serialize(loginRequest);
 

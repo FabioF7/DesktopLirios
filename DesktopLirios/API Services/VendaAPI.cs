@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 class VendaAPI
 {
-    public static async Task<string?> VendaApi(List<VendaRequest>? VendaRequest, int? id, string tipoApi, SecureString jwtToken)
+    public static async Task<string?> VendaApi(List<VendaRequest>? VendaRequest, int? id, string tipoApi, string valorPago, SecureString jwtToken)
     {
         using (HttpClient client = new HttpClient())
         {
@@ -32,7 +32,7 @@ class VendaAPI
                 if (tipoApi == "Get2" && id != null)
                     response = await client.GetAsync(string.Format(AppConfig.VendaApiUrl, "Cliente/" + id));
                 if (tipoApi == "Post" && id == null)
-                    response = await client.PostAsync(string.Format(AppConfig.VendaApiUrl,""), content);
+                    response = await client.PostAsync(string.Format(AppConfig.VendaApiUrl, valorPago), content);
                 if (tipoApi == "Put" && id != null)
                     response = await client.PutAsync(string.Format(AppConfig.VendaApiUrl, id), content);
                 if (tipoApi == "Delete" && id != null) 

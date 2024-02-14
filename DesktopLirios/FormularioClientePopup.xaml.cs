@@ -4,6 +4,7 @@ using System;
 using System.Windows;
 using System.Security;
 using System.Threading.Tasks;
+using System.Globalization;
 
 namespace DesktopLirios
 {
@@ -43,7 +44,7 @@ namespace DesktopLirios
                 id = (int)ClienteMostra.Id;
                 txtNome.Text = ClienteMostra.Nome;
                 txtEmail.Text = ClienteMostra.Email;
-                dpDtNascimento.Text = ClienteMostra.DtNascimento.ToString();
+                dpDtNascimento.Text = ClienteMostra.DtNascimento.ToString("dd/MM/yyyy");
                 txtCelular.Text = ClienteMostra.Celular.ToString();
                 txtEndereco.Text = ClienteMostra.Endereco;
                 txtCEP.Text = ClienteMostra.CEP;
@@ -69,7 +70,11 @@ namespace DesktopLirios
                 }
 
                 var retorno = await CarregaValorDivida(id);
-                txtValDivida.Text = retorno.ToString();
+
+                if (retorno != null)
+                {
+                    txtValDivida.Text = retorno.ToString();
+                }
 
                 if (tipoTela == "Editar")
                 {
@@ -107,6 +112,7 @@ namespace DesktopLirios
                     //txtIndicacao.Text = Cliente.Indicacao;
                     Cliente.Sexo = cbSexo.SelectedIndex;
                     Cliente.Bloqueado = (rbSim.IsChecked == true) ? 1 : 0;
+                    Cliente.Inadimplencia = (cbSim.IsChecked == true) ? 1 : 0;
                     Cliente.LimiteInadimplencia = long.Parse(string.IsNullOrEmpty(txtLimite.Text) ? "0" : txtLimite.Text);
                     Cliente.Observacoes = txtObservacao.Text;
                     Cliente.DtAlteracao = DateTime.Now;
@@ -144,6 +150,7 @@ namespace DesktopLirios
                         //txtIndicacao.Text = Cliente.Indicacao;
                         Cliente.Sexo = cbSexo.SelectedIndex;
                         Cliente.Bloqueado = (rbSim.IsChecked == true) ? 1 : 0;
+                        Cliente.Inadimplencia = (cbSim.IsChecked == true) ? 1 : 0;
                         Cliente.LimiteInadimplencia = long.Parse(string.IsNullOrEmpty(txtLimite.Text) ? "0" : txtLimite.Text);
                         Cliente.Observacoes = txtObservacao.Text;
                         Cliente.DtCadastro = DateTime.Now;
@@ -171,6 +178,7 @@ namespace DesktopLirios
             ClienteEdicao.CEP = ClienteMostra.CEP;
             ClienteEdicao.Sexo = ClienteMostra.Sexo;
             ClienteEdicao.Bloqueado = ClienteMostra.Bloqueado;
+            ClienteEdicao.Inadimplencia = ClienteMostra.Inadimplencia;
             ClienteEdicao.LimiteInadimplencia = ClienteMostra.LimiteInadimplencia;
             ClienteEdicao.Observacoes = ClienteMostra.Observacoes;
             //txtIndicacao.Text = Cliente.Indicacao;
@@ -243,9 +251,9 @@ namespace DesktopLirios
         {
             try
             {
-                //var paginaVendas = new PaginaVendas(jwtToken);
-                //MainFrame.Navigate(paginaVendas);
+                var formularioPopup = new FormularioHistoricoClientePopup(jwtToken, id);
 
+                formularioPopup.ShowDialog();
             }
             catch (NullReferenceException ex)
             {
@@ -254,6 +262,32 @@ namespace DesktopLirios
             catch (Exception ex)
             {
                 MessageBox.Show($"Erro ao carregar formulário de Venda: {ex.Message}");
+            }
+        }
+
+        private async void btnOk_ClickAsync(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                PagamentoRequest pagamento = new PagamentoRequest();
+
+                pagamento.ClienteId = id;
+                pagamento.ValorPago = float.Parse(txtPagou.Text);
+                pagamento.DtPagamento = DateTime.Now;
+                pagamento.CadastradoPor = "fabio.firmino";
+
+                var response = await PagamentoAPI.PagamentoApi(pagamento, null, "Post", jwtToken);
+
+                if (response != null)
+                {
+                    MessageBox.Show("Pagamento cadastrado!");
+                }
+
+                txtPagou.Clear();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Erro ao carregar dados da API: {ex.Message}");
             }
         }
     }
