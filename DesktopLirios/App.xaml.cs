@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DesktopLirios.Common;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
@@ -13,5 +14,12 @@ namespace DesktopLirios
     /// </summary>
     public partial class App : Application
     {
+        protected override void OnExit(ExitEventArgs e)
+        {
+            base.OnExit(e);
+            ClienteGlobal.clienteGlobal = null;
+            ProdutoGlobal.produtoGlobal = null;
+            VendaGlobal.vendaGlobal = null;
+        }
     }
 }

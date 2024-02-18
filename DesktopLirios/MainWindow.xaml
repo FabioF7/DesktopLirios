@@ -5,13 +5,13 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DesktopLirios"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="384" Width="683">
     <Grid>
-        <TextBox x:Name="txUsuario" HorizontalAlignment="Center" Margin="0,195,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" FontFamily="Calibri" Height="18"/>
-        <PasswordBox x:Name="txSenha" HorizontalAlignment="Center" Margin="0,217,0,0" VerticalAlignment="Top" Width="120"/>
-        <Label x:Name="lbUsuario" Content="Usuário:" HorizontalAlignment="Left" Margin="266,188,0,0" VerticalAlignment="Top" Height="32" Width="69" FontFamily="Calibri" FontSize="16" FontWeight="Bold"/>
-        <Label x:Name="lbSenha" Content="Senha:" HorizontalAlignment="Left" Margin="277,211,0,0" VerticalAlignment="Top" FontFamily="Calibri" FontSize="16" FontWeight="Bold" Width="58"/>
-        <Button x:Name="btnAcessar" Content="Acessar" HorizontalAlignment="Center" Height="21" Margin="0,246,0,0" VerticalAlignment="Top" Width="86" Background="#FF318A12" FontWeight="Bold" FontFamily="Calibri" FontSize="14" Click="btnAcessar_Click"/>
+        <TextBox x:Name="txUsuario" HorizontalAlignment="Center" Margin="0,161,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" FontFamily="Calibri" Height="18"/>
+        <PasswordBox x:Name="txSenha" HorizontalAlignment="Center" Margin="0,184,0,0" VerticalAlignment="Top" Width="120"/>
+        <Label x:Name="lbUsuario" Content="Usuário:" HorizontalAlignment="Left" Margin="207,154,0,0" VerticalAlignment="Top" Height="32" Width="70" FontFamily="Calibri" FontSize="16" FontWeight="Bold"/>
+        <Label x:Name="lbSenha" Content="Senha:" HorizontalAlignment="Left" Margin="219,178,0,0" VerticalAlignment="Top" FontFamily="Calibri" FontSize="16" FontWeight="Bold" Width="58"/>
+        <Button x:Name="btnAcessar" Content="Acessar" HorizontalAlignment="Center" Height="21" Margin="0,207,0,0" VerticalAlignment="Top" Width="86" Background="#FF318A12" FontWeight="Bold" FontFamily="Calibri" FontSize="14" Click="btnAcessar_Click" IsDefault="True"/>
 
     </Grid>
 </Window>

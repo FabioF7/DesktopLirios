@@ -4,6 +4,8 @@ using System;
 using System.Windows;
 using System.Security;
 using System.Threading.Tasks;
+using DesktopLirios.Common;
+using Newtonsoft.Json;
 using System.Globalization;
 
 namespace DesktopLirios
@@ -74,6 +76,10 @@ namespace DesktopLirios
                 if (retorno != null)
                 {
                     txtValDivida.Text = retorno.ToString();
+                    if(cbSim.IsChecked == false)
+                    {
+                        cbSim.IsChecked = true;
+                    }
                 }
 
                 if (tipoTela == "Editar")
@@ -157,6 +163,9 @@ namespace DesktopLirios
                         Cliente.CadastradoPor = "Admin";
 
                         var response = await ClienteAPI.ClienteApi(Cliente, null, "Post", jwtToken);
+                        var clienteCadastrado = JsonConvert.DeserializeObject<ClienteResponse>(response);
+
+                        ClienteGlobal.AdicionarCliente(clienteCadastrado);
                     }
                     catch (Exception ex)
                     {
@@ -284,6 +293,8 @@ namespace DesktopLirios
                 }
 
                 txtPagou.Clear();
+
+                ClienteGlobal.AtualizarClientePagamento(id, pagamento.ValorPago);
             }
             catch (Exception ex)
             {

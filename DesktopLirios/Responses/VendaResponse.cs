@@ -15,6 +15,7 @@ namespace DesktopLirios.Responses
         public int MetodoPagamento { get; set; }
         public int Tipo { get; set; }
         public int TipoTransacao { get; set; }
+        public float Lucro { get; set; }
         public string? CadastradoPor { get; set; }
         public int Quantidade { get; set; }
         public int? PreVenda { get; set; }

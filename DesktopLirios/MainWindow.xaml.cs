@@ -27,6 +27,7 @@ namespace DesktopLirios
         {
             InitializeComponent();
             CenterWindowOnScreen();
+            PreencherNomeUsuarioSalvo();
         }
 
         private void CenterWindowOnScreen()
@@ -41,8 +42,20 @@ namespace DesktopLirios
             Top = (screenHeight - windowHeight) / 2;
         }
 
+        private void PreencherNomeUsuarioSalvo()
+        {
+            string nomeUsuarioSalvo = Properties.Settings.Default.UsuarioSalvo;
+            if (!string.IsNullOrEmpty(nomeUsuarioSalvo))
+            {
+                txUsuario.Text = nomeUsuarioSalvo;
+            }
+        }
+
         private async void loginUsuario()
         {
+            Properties.Settings.Default.UsuarioSalvo = txUsuario.Text;
+            Properties.Settings.Default.Save();
+
             var response = await LoginAPI.LoginApi(new LoginRequest { Usuario = txUsuario.Text, Senha = txSenha.Password });
 
             if (response != null)
@@ -73,15 +86,6 @@ namespace DesktopLirios
         private async void btnAcessar_Click(object sender, RoutedEventArgs e)
         {
             loginUsuario();
-        }
-
-        private void Window_PreviewKeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.Key == Key.Enter)
-            {
-                loginUsuario();
-                e.Handled = true;
-            }
         }
     }
 }

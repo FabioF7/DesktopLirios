@@ -6,18 +6,18 @@
     mc:Ignorable="av" x:Class="DesktopLirios.PaginaClientes"
     Background="White">
 
-    <Grid x:Name="grdTelaClientes" Width="1000" Height="700">
+    <Grid x:Name="grdTelaClientes" Width="1216" Height="768">
 
-        <Button x:Name="btnBuscar" Content="Pesquisar" HorizontalAlignment="Left" Height="32" Margin="890,22,0,0" VerticalAlignment="Top" Width="100" Click="btnBuscar_Click" FontSize="10" FontWeight="Bold"/>
+        <Button x:Name="btnAtualizar" Content="Atualizar" HorizontalAlignment="Left" Height="32" Margin="1090,22,0,0" VerticalAlignment="Top" Width="100" Click="btnAtualizar_Click" FontSize="10" FontWeight="Bold"/>
 
-        <DataGrid x:Name="grdClientes" HorizontalAlignment="Center" Height="482" VerticalAlignment="Top" Width="980" av:ItemsSource="{av:SampleData ItemCount=5}" Margin="0,75,0,0"/>
-        <TextBox x:Name="txtPesquisar" HorizontalAlignment="Left" Height="24" Margin="115,26,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="400" TextChanged="txtPesquisar_TextChanged"/>
-        <Label Content="Nome ou Celular:" HorizontalAlignment="Left" Height="25" Margin="10,26,0,0" VerticalAlignment="Top" Width="100" FontWeight="Bold" FontSize="11"/>
-        <CheckBox x:Name="cbInad" Content="Inadimplente" HorizontalAlignment="Left" Height="16" Margin="520,30,0,0" VerticalAlignment="Top" Width="95" FontWeight="Bold" FontSize="11" Checked="cbInad_Checked" Unchecked="cbInad_Unchecked"/>
-        <Button x:Name="btnEditar" Content="Editar" HorizontalAlignment="Left" Margin="863,563,0,0" VerticalAlignment="Top" Width="60" Height="22" FontSize="10" FontWeight="Bold" Click="btnEditar_Click"/>
-        <Button x:Name="btnCadastrar" Content="Cadastrar" HorizontalAlignment="Left" Height="22" Margin="10,563,0,0" VerticalAlignment="Top" Width="62" Click="btnCadastrar_Click" FontWeight="Bold" FontSize="10"/>
-        <Button x:Name="btnExcluir" Content="Excluir" HorizontalAlignment="Left" Height="22" Margin="796,563,0,0" VerticalAlignment="Top" Width="62" FontWeight="Bold" FontSize="10" Click="btnExcluir_Click"/>
-        <Button x:Name="btnVisualizar" Content="Visualizar" HorizontalAlignment="Left" Margin="928,563,0,0" VerticalAlignment="Top" Width="62" Height="22" FontSize="10" FontWeight="Bold" Click="btnVisualizar_Click"/>
+        <DataGrid x:Name="grdClientes" HorizontalAlignment="Center" Height="589" VerticalAlignment="Top" Width="1165" av:ItemsSource="{av:SampleData ItemCount=5}" Margin="0,75,0,0"/>
+        <TextBox x:Name="txtPesquisar" HorizontalAlignment="Left" Height="24" Margin="131,27,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="400" TextChanged="txtPesquisar_TextChanged"/>
+        <Label Content="Nome ou Celular:" HorizontalAlignment="Left" Height="24" Margin="26,26,0,0" VerticalAlignment="Top" Width="100" FontWeight="Bold" FontSize="11"/>
+        <CheckBox x:Name="cbInad" Content="Inadimplente" HorizontalAlignment="Left" Height="16" Margin="536,31,0,0" VerticalAlignment="Top" Width="95" FontWeight="Bold" FontSize="11" Checked="cbInad_Checked" Unchecked="cbInad_Unchecked"/>
+        <Button x:Name="btnEditar" Content="Editar" HorizontalAlignment="Left" Margin="1064,669,0,0" VerticalAlignment="Top" Width="60" Height="22" FontSize="10" FontWeight="Bold" Click="btnEditar_Click"/>
+        <Button x:Name="btnCadastrar" Content="Cadastrar" HorizontalAlignment="Left" Height="22" Margin="26,669,0,0" VerticalAlignment="Top" Width="62" Click="btnCadastrar_Click" FontWeight="Bold" FontSize="10"/>
+        <Button x:Name="btnExcluir" Content="Excluir" HorizontalAlignment="Left" Height="22" Margin="996,669,0,0" VerticalAlignment="Top" Width="62" FontWeight="Bold" FontSize="10" Click="btnExcluir_Click"/>
+        <Button x:Name="btnVisualizar" Content="Visualizar" HorizontalAlignment="Left" Margin="1128,669,0,0" VerticalAlignment="Top" Width="62" Height="22" FontSize="10" FontWeight="Bold" Click="btnVisualizar_Click"/>
 
     </Grid>
 </Page>

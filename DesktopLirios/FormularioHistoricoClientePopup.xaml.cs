@@ -4,10 +4,10 @@ using System;
 using System.Windows;
 using System.Security;
 using System.Threading.Tasks;
-using System.Globalization;
-using DesktopLirios.Common;
 using Newtonsoft.Json;
 using System.Collections.Generic;
+using System.Security.Claims;
+using DesktopLirios.Common;
 
 namespace DesktopLirios
 {
@@ -48,6 +48,19 @@ namespace DesktopLirios
                 var listaHistorico = JsonConvert.DeserializeObject<List<HistoricoResponse>>(response);
 
                 grdHistorico.ItemsSource = listaHistorico;
+
+                var retorno = await CarregaValorDivida(clienteId);
+
+                if (retorno != null)
+                {
+                    txtTotalDev.Text = retorno.ToString();
+                }
+
+                var index = ClienteGlobal.clienteGlobal.FindIndex(cliente => cliente.Id == clienteId);
+
+                txtNome.Text = ClienteGlobal.clienteGlobal[index].Nome;
+                txtCelular.Text = ClienteGlobal.clienteGlobal[index].Celular.ToString();
+
             }
             catch (Exception ex)
             {
@@ -55,16 +68,21 @@ namespace DesktopLirios
             }
         }
 
-        //private async Task<string> CarregaValorDivida(int id)
-        //{
-        //    var response = await PagamentoAPI.PagamentoApi(null, id, "Get2", jwtToken);
+        private void btnGeraCobranca_Click(object sender, RoutedEventArgs e)
+        {
+            throw new NotImplementedException();
+        }
 
-        //    if(response != null)
-        //    {
-        //        return response;
-        //    }
+        private async Task<string> CarregaValorDivida(int id)
+        {
+            var response = await PagamentoAPI.PagamentoApi(null, id, "Get2", jwtToken);
 
-        //    return null;
-        //}
+            if (response != null)
+            {
+                return response;
+            }
+
+            return null;
+        }
     }
 }

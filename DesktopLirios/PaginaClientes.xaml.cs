@@ -1,16 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
+using System.Runtime.ConstrainedExecution;
 using System.Security;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using DesktopLirios.API_Services;
 using DesktopLirios.Common;
-using DesktopLirios.Requests;
 using DesktopLirios.Responses;
 using Newtonsoft.Json;
 
@@ -25,7 +23,17 @@ namespace DesktopLirios
         {
             InitializeComponent();
             jwtToken = token;
-            CarregarClientesAsync();
+
+            if (ClienteGlobal.clienteGlobal == null)
+            {
+                CarregarClientesAsync();
+            }
+            else
+            {
+                ConfigureDataGridColumns();
+
+                grdClientes.ItemsSource = ClienteGlobal.clienteGlobal;
+            }
         }
 
         private async Task CarregarClientesAsync()
@@ -35,6 +43,30 @@ namespace DesktopLirios
                 var response = await ClienteAPI.ClienteApi(null, null, "Get", jwtToken);
 
                 ClienteGlobal.clienteGlobal = JsonConvert.DeserializeObject<List<ClienteResponse>>(response);
+
+                foreach (var cliente in ClienteGlobal.clienteGlobal)
+                {
+                    if (cliente.Inadimplencia != 0)
+                    {
+                        var result = await CarregaValorDivida((int)cliente.Id);
+
+                        if (result != null)
+                        {
+                            cliente.Devido = result.ToString();
+                            float limiteInadimplencia = (float)cliente.LimiteInadimplencia;
+                            float devido = float.Parse(cliente.Devido, CultureInfo.InvariantCulture);
+                            float limiteLivre = limiteInadimplencia - devido;
+
+                            cliente.LimiteLivre = limiteLivre.ToString("F2");
+                        }
+                    }
+                    else
+                    {
+                        cliente.Devido = 0.ToString();
+                        cliente.LimiteLivre = cliente.LimiteInadimplencia.ToString();
+                    }
+
+                }
 
                 ConfigureDataGridColumns();
 
@@ -57,15 +89,15 @@ namespace DesktopLirios
             colunaNome.Binding = new Binding("Nome");
             grdClientes.Columns.Add(colunaNome);
 
-            //DataGridTextColumn colunaDevido = new DataGridTextColumn();
-            //colunaDevido.Header = "Valor Devido";
-            //colunaDevido.Binding = new Binding("Devido") { StringFormat = "{0:0.00}", ConverterCulture = new CultureInfo("pt-BR") };
-            //grdClientes.Columns.Add(colunaDevido);
+            DataGridTextColumn colunaDevido = new DataGridTextColumn();
+            colunaDevido.Header = "Valor Devido";
+            colunaDevido.Binding = new Binding("Devido") { StringFormat = "{0:0.00}", ConverterCulture = new CultureInfo("pt-BR") };
+            grdClientes.Columns.Add(colunaDevido);
 
-            //DataGridTextColumn colunaLimite = new DataGridTextColumn();
-            //colunaLimite.Header = "Limite Livre";
-            //colunaLimite.Binding = new Binding("Livre"){ StringFormat = "{0:0.00}", ConverterCulture = new CultureInfo("pt-BR") };
-            //grdClientes.Columns.Add(colunaLimite);
+            DataGridTextColumn colunaLimite = new DataGridTextColumn();
+            colunaLimite.Header = "Limite Livre";
+            colunaLimite.Binding = new Binding("LimiteLivre") { StringFormat = "{0:0.00}", ConverterCulture = new CultureInfo("pt-BR") };
+            grdClientes.Columns.Add(colunaLimite);
 
             DataGridTextColumn colunaCelular = new DataGridTextColumn();
             colunaCelular.Header = "Celular";
@@ -82,10 +114,10 @@ namespace DesktopLirios
             colunaIndicacao.Binding = new Binding("Indicacao");
             grdClientes.Columns.Add(colunaIndicacao);
 
-            //DataGridTextColumn colunaBloqueado = new DataGridTextColumn();
-            //colunaBloqueado.Header = "Bloqueado";
-            //colunaBloqueado.Binding = new Binding("Bloqueado");
-            //grdClientes.Columns.Add(colunaBloqueado);
+            DataGridTextColumn colunaBloqueado = new DataGridTextColumn();
+            colunaBloqueado.Header = "Bloqueado";
+            colunaBloqueado.Binding = new Binding("Bloqueado");
+            grdClientes.Columns.Add(colunaBloqueado);
 
             DataGridTextColumn colunaInandinplente = new DataGridTextColumn();
             colunaInandinplente.Header = "Inandinplente";
@@ -103,6 +135,19 @@ namespace DesktopLirios
             grdClientes.Columns.Add(colunaObservacoes);
 
         }
+
+        private async Task<string> CarregaValorDivida(int id)
+        {
+            var response = await PagamentoAPI.PagamentoApi(null, id, "Get2", jwtToken);
+
+            if (response != null)
+            {
+                return response;
+            }
+
+            return null;
+        }
+
         private void txtPesquisar_TextChanged(object sender, TextChangedEventArgs e)
         {
             string termoPesquisa = txtPesquisar.Text.ToLower();
@@ -126,14 +171,10 @@ namespace DesktopLirios
 
         private void cbInad_Unchecked(object sender, RoutedEventArgs e)
         {
-            List<ClienteResponse> clientesFiltrados = ClienteGlobal.clienteGlobal
-                .Where(cliente => cliente.Inadimplencia == 0)
-                .ToList();
-
-            grdClientes.ItemsSource = clientesFiltrados;
+            grdClientes.ItemsSource = ClienteGlobal.clienteGlobal;
         }
         
-        private async void btnBuscar_Click(object sender, RoutedEventArgs e)
+        private async void btnAtualizar_Click(object sender, RoutedEventArgs e)
         {
             await CarregarClientesAsync();
         }
@@ -162,7 +203,7 @@ namespace DesktopLirios
                 var formularioPopup = new FormularioClientePopup(Cliente, jwtToken, "Editar");
                 formularioPopup.ShowDialog();
 
-                await CarregarClientesAsync();
+                ClienteGlobal.AtualizarCliente((int)Cliente.Id, jwtToken);
             }
             catch (NullReferenceException ex)
             {
@@ -185,7 +226,7 @@ namespace DesktopLirios
                     var response = await ClienteAPI.ClienteApi(null, ((ClienteResponse)grdClientes.SelectedItem).Id, "Delete", jwtToken);
                 }
 
-                await CarregarClientesAsync();
+                ClienteGlobal.RemoverClientePorId((int)((ClienteResponse)grdClientes.SelectedItem).Id);
             }
             catch (NullReferenceException ex)
             {
@@ -203,8 +244,6 @@ namespace DesktopLirios
             {
                 var formularioPopup = new FormularioClientePopup(null, jwtToken, "Cadastrar");
                 formularioPopup.ShowDialog();
-
-                await CarregarClientesAsync();
             }
             catch (Exception ex)
             {
@@ -212,7 +251,7 @@ namespace DesktopLirios
             }
         }
 
-        private void btnVisualizar_Click(object sender, RoutedEventArgs e)
+        private async void btnVisualizar_Click(object sender, RoutedEventArgs e)
         {
             try
             {

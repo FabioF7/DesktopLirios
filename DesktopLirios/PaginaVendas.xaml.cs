@@ -74,10 +74,10 @@ namespace DesktopLirios
             colunaCusto.Binding = new Binding("CustoProduto") { StringFormat = "{0:0.00}", ConverterCulture = new CultureInfo("pt-BR") };
             grdVendas.Columns.Add(colunaCusto);
 
-            //DataGridTextColumn colunaLucro = new DataGridTextColumn();
-            //colunaLucro.Header = "Lucro";
-            //colunaLucro.Binding = new Binding("Lucro") { StringFormat = "{0:0.00}", ConverterCulture = new CultureInfo("pt-BR") };
-            //grdVendas.Columns.Add(colunaLucro);
+            DataGridTextColumn colunaLucro = new DataGridTextColumn();
+            colunaLucro.Header = "Lucro";
+            colunaLucro.Binding = new Binding("Lucro") { StringFormat = "{0:0.00}", ConverterCulture = new CultureInfo("pt-BR") };
+            grdVendas.Columns.Add(colunaLucro);
 
             DataGridTextColumn colunaQuantidade = new DataGridTextColumn();
             colunaQuantidade.Header = "Quantidade";
@@ -147,6 +147,7 @@ namespace DesktopLirios
                     MetodoPagamento = ((VendaResponse)grdVendas.SelectedItem).MetodoPagamento,
                     Tipo = ((VendaResponse)grdVendas.SelectedItem).Tipo,
                     TipoTransacao = ((VendaResponse)grdVendas.SelectedItem).TipoTransacao,
+                    Lucro = ((VendaResponse)grdVendas.SelectedItem).Lucro,
                     Quantidade = ((VendaResponse)grdVendas.SelectedItem).Quantidade,
                     PreVenda = ((VendaResponse)grdVendas.SelectedItem).PreVenda
                 };
@@ -196,6 +197,7 @@ namespace DesktopLirios
                     MetodoPagamento = ((VendaResponse)grdVendas.SelectedItem).MetodoPagamento,
                     Tipo = ((VendaResponse)grdVendas.SelectedItem).Tipo,
                     TipoTransacao = ((VendaResponse)grdVendas.SelectedItem).TipoTransacao,
+                    Lucro = ((VendaResponse)grdVendas.SelectedItem).Lucro,
                     Quantidade = ((VendaResponse)grdVendas.SelectedItem).Quantidade,
                     PreVenda = ((VendaResponse)grdVendas.SelectedItem).PreVenda
                 };

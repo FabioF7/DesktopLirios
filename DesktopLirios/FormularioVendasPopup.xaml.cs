@@ -9,8 +9,6 @@ using System.Windows.Controls;
 using DesktopLirios.Common;
 using System.Collections.ObjectModel;
 using System.Windows.Data;
-using Newtonsoft.Json;
-using System.Security.Claims;
 using System.Globalization;
 
 namespace DesktopLirios
@@ -88,12 +86,11 @@ namespace DesktopLirios
                     custo += produto.CustoProduto * produto.Quantidade;
                 };
 
-                txtValTotal.Text = valorVenda.ToString("0.00");
+                txtValTotal.Text = valorVenda.ToString("F2");
 
                 float lucro = valorVenda - custo;
-                lucro = (float)Math.Round(lucro, 2);
 
-                txtValLucro.Text = lucro.ToString("0.00");
+                txtValLucro.Text = lucro.ToString("F2");
 
                 if (tipoTela == "Editar")
                 {
@@ -187,6 +184,7 @@ namespace DesktopLirios
             VendaEdicao.MetodoPagamento = VendaMostra.MetodoPagamento;
             VendaEdicao.Tipo = VendaMostra.Tipo;
             VendaEdicao.TipoTransacao = VendaMostra.TipoTransacao;
+            VendaEdicao.Lucro = VendaMostra.Lucro;
             VendaEdicao.Quantidade = VendaMostra.Quantidade;
             VendaEdicao.PreVenda = VendaMostra.PreVenda;
 
@@ -385,6 +383,7 @@ namespace DesktopLirios
                             MetodoPagamento = cbMetPag.SelectedIndex,
                             Tipo = 0,
                             TipoTransacao = 0,
+                            Lucro = float.Parse(txtValLucro.Text),
                             Quantidade = produto.Quantidade,
                             PreVenda = (bool)chbPreVenda.IsChecked ? 1 : 0,
                             CadastradoPor = "fabio.firmino"
@@ -477,10 +476,10 @@ namespace DesktopLirios
                 }
                 else if (novoValor != null && item is ProdutoResponse produtoAtual && produtoAtual == produto)
                 {
-                    produto.ValorVendaRevista = float.Parse(novoValor);
+                    produto.ValorVendaRevista = float.Parse(novoValor, CultureInfo.InvariantCulture);
 
-                    valorVenda += produto.ValorVendaRevista;
-                    custo += produto.ValorCusto;
+                    valorVenda += produto.ValorVendaRevista * produto.Quantidade;
+                    custo += produto.ValorCusto * produto.Quantidade;
                 }
                 else
                 {
