@@ -1,7 +1,6 @@
 ﻿using DesktopLirios.API_Services;
 using DesktopLirios.Requests;
 using System;
-using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Security;
@@ -35,7 +34,7 @@ class PagamentoAPI
                     response = await client.PostAsync(string.Format(AppConfig.PagamentoApiUrl, ""), content);
                 if (tipoApi == "Put" && id != null)
                     response = await client.PutAsync(string.Format(AppConfig.PagamentoApiUrl, id), content);
-                if (tipoApi == "Delete" && id != null) 
+                if (tipoApi == "Delete" && id != null)
                     response = await client.DeleteAsync(string.Format(AppConfig.PagamentoApiUrl, id));
 
                 if (response != null && response.IsSuccessStatusCode)
@@ -53,7 +52,7 @@ class PagamentoAPI
             {
                 Console.WriteLine($"Erro na chamada da API: {ex.Message}");
                 return null;
-            }   
+            }
         }
     }
 }

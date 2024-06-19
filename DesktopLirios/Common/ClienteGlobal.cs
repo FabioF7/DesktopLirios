@@ -2,7 +2,6 @@
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
 using System.Security;
 
 namespace DesktopLirios.Common
@@ -41,17 +40,18 @@ namespace DesktopLirios.Common
                 if (clienteExistente != -1)
                 {
                     var response = await ClienteAPI.ClienteApi(null, id, "Get", jwtToken);
+
                     var clienteAtualizado = JsonConvert.DeserializeObject<ClienteResponse>(response);
 
                     if (clienteAtualizado != null)
                     {
-                        clienteAtualizado.Devido = clienteGlobal[clienteExistente].Devido;
+                        clienteAtualizado.Devido = clienteGlobal[clienteExistente].Devido == null ? "0" : clienteGlobal[clienteExistente].Devido;
 
                         float limiteInadimplencia = (float)clienteAtualizado.LimiteInadimplencia;
                         float devido = float.Parse(clienteAtualizado.Devido, CultureInfo.InvariantCulture);
                         float limiteLivre = limiteInadimplencia - devido;
 
-                        if(limiteLivre == 0)
+                        if (limiteLivre == 0)
                         {
                             clienteAtualizado.LimiteLivre = clienteAtualizado.LimiteInadimplencia.ToString();
                         }
@@ -59,7 +59,7 @@ namespace DesktopLirios.Common
                         {
                             clienteAtualizado.LimiteLivre = limiteLivre.ToString("F2");
                         }
-                        
+
                         clienteGlobal[clienteExistente] = clienteAtualizado;
                     }
                 }

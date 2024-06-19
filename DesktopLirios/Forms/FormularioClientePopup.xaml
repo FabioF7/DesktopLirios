@@ -2,6 +2,32 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Height="320" Width="600">
+
+    <Window.Resources>
+        <Style TargetType="Button">
+            <Setter Property="Background" Value="#800080"/>
+            <!-- Lilás -->
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Padding" Value="10"/>
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="20">
+                            <ContentPresenter HorizontalAlignment="Center"
+                                              VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+
     <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Height="286" Width="580">
         <TextBlock Text="Nome:" VerticalAlignment="Top" Width="40" FontWeight="Bold" Height="21" HorizontalAlignment="Left" Margin="10,10,0,0" RenderTransformOrigin="0.225,-1.522"/>
         <TextBox x:Name="txtNome" Width="250" Height="21" Margin="55,10,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
@@ -44,6 +70,8 @@
         <Label x:Name="lblPagou" Content="Pagou:" HorizontalAlignment="Left" Height="22" Margin="10,250,0,0" VerticalAlignment="Top" Width="40" FontSize="9" FontWeight="Bold"/>
         <Button x:Name="btnOk" Content="OK" HorizontalAlignment="Left" Height="22" Margin="120,250,0,0" VerticalAlignment="Top" Width="20" FontSize="8" FontWeight="Bold" Click="btnOk_ClickAsync"/>
         <Button x:Name="btnVenda" Content="Venda" HorizontalAlignment="Left" Height="22" Margin="433,250,0,0" VerticalAlignment="Top" Width="62" FontWeight="Bold" FontSize="10" Click="btnVenda_Click"/>
+
         <Button x:Name="btnHistorico" Content="Historico" HorizontalAlignment="Left" Height="22" Margin="366,250,0,0" VerticalAlignment="Top" Width="62" FontWeight="Bold" FontSize="10" Click="btnHistorico_Click"/>
+
     </Grid>
 </Window>

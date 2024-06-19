@@ -1,12 +1,12 @@
 ﻿using DesktopLirios.Requests;
 using DesktopLirios.Responses;
 using Newtonsoft.Json;
-using System.Collections.Generic;
 using System;
-using System.Windows;
-using System.Threading.Tasks;
-using System.Security;
+using System.Collections.Generic;
 using System.Linq;
+using System.Security;
+using System.Threading.Tasks;
+using System.Windows;
 
 namespace DesktopLirios
 {
@@ -45,8 +45,8 @@ namespace DesktopLirios
 
             if (ProdutoMostra != null && tipoTela != "Cadastrar")
             {
-                id = (int)ProdutoMostra.Id;
-                txtNome.Text = ProdutoMostra.Nome;               
+                id = ProdutoMostra.Id;
+                txtNome.Text = ProdutoMostra.Nome;
                 txtSKU.Text = ProdutoMostra.Codigo;
                 txtBarra.Text = ProdutoMostra.CodigoDeBarra.ToString();
                 txtCusto.Text = ProdutoMostra.ValorCusto.ToString();
@@ -73,7 +73,7 @@ namespace DesktopLirios
 
                 Produto = ProdutoEdicao;
             }
-            
+
         }
 
         private async void btnSalvar_ClickAsync(object sender, RoutedEventArgs e)
@@ -133,7 +133,7 @@ namespace DesktopLirios
                     {
                         MessageBox.Show($"Erro ao carregar dados da API: {ex.Message}");
                     }
-                }             
+                }
             }
             Close();
         }

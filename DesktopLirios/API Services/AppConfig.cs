@@ -29,7 +29,8 @@ namespace DesktopLirios.API_Services
         public static string TipoServicoApiUrl => Configuration.GetSection("ApiSettings:TipoServicoApiUrl").Value;
         public static string UsuarioApiUrl => Configuration.GetSection("ApiSettings:UsuarioApiUrl").Value;
         public static string VendaApiUrl => Configuration.GetSection("ApiSettings:VendaApiUrl").Value;
-
+        public static string InventarioApiUrl => Configuration.GetSection("ApiSettings:InventarioApiUrl").Value;
+        public static string InventarioDetalhesApiUrl => Configuration.GetSection("ApiSettings:InventarioDetalhesApiUrl").Value;
 
         public static string ObterTokenSecure(SecureString jwtToken)
         {

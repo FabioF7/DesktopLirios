@@ -6,6 +6,31 @@
     mc:Ignorable="av" x:Class="DesktopLirios.PaginaVendas"
     Background="White">
 
+    <Page.Resources>
+        <Style TargetType="Button">
+            <Setter Property="Background" Value="#800080"/>
+            <!-- Lilás -->
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Padding" Value="10"/>
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="20">
+                            <ContentPresenter HorizontalAlignment="Center"
+                                              VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Page.Resources>
+
     <Grid x:Name="grdTelaVendas" Width="1216" Height="768">
 
         <Button x:Name="btnBuscar" Content="Pesquisar" HorizontalAlignment="Left" Height="32" Margin="1090,22,0,0" VerticalAlignment="Top" Width="100" Click="btnBuscar_Click" FontSize="10" FontWeight="Bold"/>

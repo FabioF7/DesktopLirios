@@ -1,15 +1,15 @@
-﻿using DesktopLirios.Requests;
+﻿using DesktopLirios.Common;
+using DesktopLirios.Requests;
 using DesktopLirios.Responses;
-using System.Collections.Generic;
 using System;
-using System.Windows;
-using System.Security;
-using System.Linq;
-using System.Windows.Controls;
-using DesktopLirios.Common;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Windows.Data;
 using System.Globalization;
+using System.Linq;
+using System.Security;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
 
 namespace DesktopLirios
 {
@@ -50,13 +50,13 @@ namespace DesktopLirios
         {
             if (VendaMostra != null && tipoTela == "Cliente")
             {
-                idVenda = (int)VendaMostra.IdVenda;
+                idVenda = VendaMostra.IdVenda;
 
                 CarregaComboBox();
             }
             else if (VendaMostra != null && tipoTela != "Cadastrar")
             {
-                idVenda = (int)VendaMostra.IdVenda;
+                idVenda = VendaMostra.IdVenda;
 
                 txtClienteSearch.TextChanged -= txtClienteSearch_TextChanged;
 
@@ -250,7 +250,7 @@ namespace DesktopLirios
                                     string qtd = cellContent.Text;
 
                                     CarregaTotaleLucro(produto, null, qtd);
-                                }                                
+                                }
                             }
                             else
                             {
@@ -420,7 +420,7 @@ namespace DesktopLirios
                                 MessageBox.Show("Venda cadastrada com Sucesso!.", "Venda Finalizada", MessageBoxButton.OK, MessageBoxImage.Information);
                             }
                         }
-                    }                    
+                    }
                 }
                 else
                 {
@@ -553,7 +553,7 @@ namespace DesktopLirios
 
                 CarregaTotaleLucro(null, null, null);
             }
-        }    
+        }
 
         public void SetTxtClienteSearch(string value)
         {

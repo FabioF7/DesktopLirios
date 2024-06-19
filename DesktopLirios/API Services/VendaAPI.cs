@@ -35,7 +35,7 @@ class VendaAPI
                     response = await client.PostAsync(string.Format(AppConfig.VendaApiUrl, valorPago), content);
                 if (tipoApi == "Put" && id != null)
                     response = await client.PutAsync(string.Format(AppConfig.VendaApiUrl, id), content);
-                if (tipoApi == "Delete" && id != null) 
+                if (tipoApi == "Delete" && id != null)
                     response = await client.DeleteAsync(string.Format(AppConfig.VendaApiUrl, id));
 
                 if (response != null && response.IsSuccessStatusCode)
@@ -53,7 +53,7 @@ class VendaAPI
             {
                 Console.WriteLine($"Erro na chamada da API: {ex.Message}");
                 return null;
-            }   
+            }
         }
     }
 }

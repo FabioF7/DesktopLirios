@@ -1,11 +1,10 @@
-﻿using DesktopLirios.Responses;
+﻿using DesktopLirios.Common;
+using DesktopLirios.Responses;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Security;
-using System.Threading.Tasks;
 using System.Windows;
-using DesktopLirios.Common;
 
 namespace DesktopLirios
 {
@@ -80,7 +79,7 @@ namespace DesktopLirios
 
         private void LbiInventario_Selected(object sender, RoutedEventArgs e)
         {
-            //MainFrame.Navigate(new PaginaInventario(jwtToken));
+            MainFrame.Navigate(new PaginaInventario(jwtToken));
         }
 
         private void LbiRelatorios_Selected(object sender, RoutedEventArgs e)
@@ -104,7 +103,7 @@ namespace DesktopLirios
             }
             catch (Exception ex)
             {
-                //MessageBox.Show($"Erro ao carregar dados da API: {ex.Message}");
+                MessageBox.Show($"Erro ao carregar dados da API: {ex.Message}");
             }
         }
 
@@ -119,7 +118,7 @@ namespace DesktopLirios
             }
             catch (Exception ex)
             {
-                //MessageBox.Show($"Erro ao carregar dados da API: {ex.Message}");
+                MessageBox.Show($"Erro ao carregar dados da API: {ex.Message}");
             }
         }
 
@@ -134,7 +133,7 @@ namespace DesktopLirios
             }
             catch (Exception ex)
             {
-                //MessageBox.Show($"Erro ao carregar dados da API: {ex.Message}");
+                MessageBox.Show($"Erro ao carregar dados da API: {ex.Message}");
             }
         }
 

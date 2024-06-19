@@ -1,0 +1,42 @@
+﻿<Page
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:av="http://schemas.microsoft.com/expression/blend/2008" 
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls" 
+    mc:Ignorable="av" x:Class="DesktopLirios.PaginaInventario"
+    Background="White">
+
+    <Page.Resources>
+        <Style TargetType="Button">
+            <Setter Property="Background" Value="#800080"/>
+            <!-- Lilás -->
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Padding" Value="10"/>
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="20">
+                            <ContentPresenter HorizontalAlignment="Center"
+                                              VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Page.Resources>
+
+    <Grid x:Name="grdTelaInventario" Width="1216" Height="768">
+        <DataGrid x:Name="grdTodos" HorizontalAlignment="Center" Height="599" VerticalAlignment="Top" Width="1164" ItemsSource="{Binding ProdutoResponse}" Margin="0,60,0,0"/>
+        <Button x:Name="btnNovo" Content="Novo Inventário" HorizontalAlignment="Left" Height="33" Margin="26,664,0,0" VerticalAlignment="Top" Width="138" FontSize="16" FontWeight="Bold" Click="btnNovo_Click"/>
+        <Button x:Name="btnAbrir" Content="Abrir Inventário" HorizontalAlignment="Left" Height="33" Margin="1057,664,0,0" VerticalAlignment="Top" Width="133" FontSize="16" FontWeight="Bold" Click="btnAbrir_Click"/>
+        <Button x:Name="btnPesquisar" Content="Pesquisar" HorizontalAlignment="Left" Height="28" Margin="1090,21,0,0" VerticalAlignment="Top" Width="100" FontSize="16" Click="btnPesquisar_Click"/>
+    </Grid>
+
+</Page>

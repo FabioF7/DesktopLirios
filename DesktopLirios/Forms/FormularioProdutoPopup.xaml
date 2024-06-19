@@ -2,6 +2,32 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Height="320" Width="600">
+
+    <Window.Resources>
+        <Style TargetType="Button">
+            <Setter Property="Background" Value="#800080"/>
+            <!-- Lilás -->
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Padding" Value="10"/>
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="20">
+                            <ContentPresenter HorizontalAlignment="Center"
+                                              VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+
     <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Height="286" Width="580">
         <TextBlock Text="Nome Produto:" VerticalAlignment="Top" Width="90" FontWeight="Bold" Height="21" HorizontalAlignment="Left" Margin="10,10,0,0" RenderTransformOrigin="0.225,-1.522"/>
         <TextBox x:Name="txtNome" Width="245" Height="21" Margin="105,10,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
@@ -30,6 +56,6 @@
         <ComboBox x:Name="cbOrigem" HorizontalAlignment="Left" Height="21" Margin="431,10,0,0" VerticalAlignment="Top" Width="139"/>
         <Button x:Name="btnEntradas" Content="Entradas" Click="btnSalvar_ClickAsync" Height="22" Width="62" Margin="281,250,237,14" FontWeight="Bold" FontSize="10"/>
         <Button x:Name="btnVendas" Content="Vendas" Click="btnSalvar_ClickAsync" Height="22" Width="62" Margin="348,250,170,14" FontWeight="Bold" FontSize="10"/>
-        <Button x:Name="btnHestoque" Content="Historico Estoque" Click="btnSalvar_ClickAsync" Height="22" Margin="415,250,85,14" FontWeight="Bold" FontSize="9" Width="80"/>
+        <Button x:Name="btnHestoque" Content="Hist. Estoque" Click="btnSalvar_ClickAsync" Height="22" Margin="415,250,85,14" FontWeight="Bold" FontSize="9" Width="80"/>
     </Grid>
 </Window>

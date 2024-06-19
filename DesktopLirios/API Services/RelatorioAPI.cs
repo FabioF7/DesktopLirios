@@ -38,7 +38,7 @@ class RelatorioAPI
             {
                 Console.WriteLine($"Erro na chamada da API: {ex.Message}");
                 return null;
-            }   
+            }
         }
     }
 }

@@ -27,10 +27,10 @@ class OrigemAPI
                 if (tipoApi == "Get" && id == null)
                     response = await client.GetAsync(string.Format(AppConfig.OrigemApiUrl, ""));
                 if (tipoApi == "Post" && id == null)
-                    response = await client.PostAsync(string.Format(AppConfig.OrigemApiUrl,""), content);
+                    response = await client.PostAsync(string.Format(AppConfig.OrigemApiUrl, ""), content);
                 if (tipoApi == "Put" && id != null)
                     response = await client.PutAsync(string.Format(AppConfig.OrigemApiUrl, id), content);
-                if (tipoApi == "Delete" && id != null) 
+                if (tipoApi == "Delete" && id != null)
                     response = await client.DeleteAsync(string.Format(AppConfig.OrigemApiUrl, id));
 
                 if (response != null && response.IsSuccessStatusCode)

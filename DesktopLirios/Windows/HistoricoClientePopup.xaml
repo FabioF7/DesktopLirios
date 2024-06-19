@@ -1,0 +1,65 @@
+﻿<Window x:Class="DesktopLirios.HistoricoClientePopup"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Height="384" Width="726">
+    <Window.Resources>
+        <!-- Estilo para o TextBlock em negrito -->
+        <Style TargetType="TextBlock" x:Key="Negrito">
+            <Setter Property="FontWeight" Value="Bold"/>
+        </Style>
+        <!-- Estilo para o TextBox -->
+        <Style TargetType="TextBox" x:Key="CaixaTexto">
+            <Setter Property="Width" Value="250"/>
+            <Setter Property="Height" Value="21"/>
+            <Setter Property="Margin" Value="5"/>
+        </Style>
+        <!-- Estilo para o Button -->
+        <Style TargetType="Button" x:Key="Botao">
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+            <Setter Property="Height" Value="30"/>
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="Background" Value="#800080"/>
+            <!-- Cor lilás -->
+            <Setter Property="Foreground" Value="White"/>
+            <!-- Texto branco -->
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border CornerRadius="10" Background="{TemplateBinding Background}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Cabeçalho -->
+        <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="5">
+            <TextBlock Text="Nome:" Style="{StaticResource Negrito}" RenderTransformOrigin="0.506,0.528" Height="18"/>
+            <TextBox x:Name="txtNome" Style="{StaticResource CaixaTexto}"/>
+            <TextBlock Text="Celular:" Style="{StaticResource Negrito}" Height="19"/>
+            <TextBox x:Name="txtCelular" Style="{StaticResource CaixaTexto}"/>
+            <Button x:Name="btnGeraCobranca" Content="Gerar Cobrança" Style="{StaticResource Botao}" Click="btnGeraCobranca_Click" Width="106"/>
+        </StackPanel>
+
+        <!-- Grade de Dados -->
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" Margin="5">
+            <DataGrid x:Name="grdHistorico" ItemsSource="{Binding Dados}" Margin="0 5 0 0"/>
+        </ScrollViewer>
+
+        <!-- Rodapé -->
+        <StackPanel Grid.Row="1" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="5">
+            <TextBlock Text="Total Devido:" Style="{StaticResource Negrito}"/>
+            <TextBox x:Name="txtTotalDev" Style="{StaticResource CaixaTexto}"/>
+        </StackPanel>
+    </Grid>
+</Window>

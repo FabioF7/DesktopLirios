@@ -35,6 +35,8 @@ namespace DesktopLirios.Responses
         public string? AlteradoPor { get; set; }
         public DateTime? DtAlteracao { get; set; }
 
+        public int Contabilizado { get; set; }
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected virtual void OnPropertyChanged(string propertyName)

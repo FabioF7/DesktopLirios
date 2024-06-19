@@ -1,4 +1,7 @@
-﻿using System;
+﻿using DesktopLirios.Common;
+using DesktopLirios.Responses;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -7,11 +10,6 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using DesktopLirios.API_Services;
-using DesktopLirios.Common;
-using DesktopLirios.Requests;
-using DesktopLirios.Responses;
-using Newtonsoft.Json;
 
 namespace DesktopLirios
 {
@@ -121,7 +119,7 @@ namespace DesktopLirios
 
             grdProdutos.ItemsSource = produtosFiltrados;
         }
-        
+
         private async void btnBuscar_Click(object sender, RoutedEventArgs e)
         {
             await CarregarProdutosAsync();

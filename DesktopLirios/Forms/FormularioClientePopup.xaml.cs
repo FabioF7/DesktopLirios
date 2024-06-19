@@ -1,12 +1,11 @@
-﻿using DesktopLirios.Requests;
+﻿using DesktopLirios.Common;
+using DesktopLirios.Requests;
 using DesktopLirios.Responses;
+using Newtonsoft.Json;
 using System;
-using System.Windows;
 using System.Security;
 using System.Threading.Tasks;
-using DesktopLirios.Common;
-using Newtonsoft.Json;
-using System.Globalization;
+using System.Windows;
 
 namespace DesktopLirios
 {
@@ -73,10 +72,10 @@ namespace DesktopLirios
 
                 var retorno = await CarregaValorDivida(id);
 
-                if (retorno != null)
+                if (retorno != null && retorno != "0")
                 {
                     txtValDivida.Text = retorno.ToString();
-                    if(cbSim.IsChecked == false)
+                    if (cbSim.IsChecked == false)
                     {
                         cbSim.IsChecked = true;
                     }
@@ -130,6 +129,8 @@ namespace DesktopLirios
                         try
                         {
                             var response = await ClienteAPI.ClienteApi(Cliente, id, "Put", jwtToken);
+
+                            ClienteGlobal.AtualizarCliente(id, jwtToken);
                         }
                         catch (Exception ex)
                         {
@@ -221,7 +222,7 @@ namespace DesktopLirios
         {
             var response = await PagamentoAPI.PagamentoApi(null, id, "Get2", jwtToken);
 
-            if(response != null)
+            if (response != null)
             {
                 return response;
             }
@@ -260,7 +261,7 @@ namespace DesktopLirios
         {
             try
             {
-                var formularioPopup = new FormularioHistoricoClientePopup(jwtToken, id);
+                var formularioPopup = new HistoricoClientePopup(jwtToken, id);
 
                 formularioPopup.ShowDialog();
             }

@@ -1,8 +1,7 @@
-﻿using DesktopLirios.Requests;
+﻿using DesktopLirios.API_Services;
+using DesktopLirios.Requests;
 using System;
-using System.Collections.Generic;
 using System.Net.Http;
-using System.Security;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -15,7 +14,7 @@ class LoginAPI
         {
             try
             {
-                string uri = "https://sistemalirios.azurewebsites.net/api/Usuario/Login";
+                string uri = AppConfig.LoginApiUrl;
 
                 string jsonContent = JsonSerializer.Serialize(loginRequest);
 
@@ -30,7 +29,7 @@ class LoginAPI
                 }
                 else
                 {
-                    Console.WriteLine($"Erro na chamada da API: {response.StatusCode}");                 
+                    Console.WriteLine($"Erro na chamada da API: {response.StatusCode}");
                     return null;
                 }
             }

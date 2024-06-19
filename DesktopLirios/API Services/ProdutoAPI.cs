@@ -1,11 +1,9 @@
 ﻿using DesktopLirios.API_Services;
 using DesktopLirios.Requests;
 using System;
-using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Security;
-using System.Security.Policy;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -31,10 +29,10 @@ class ProdutoAPI
                 if (tipoApi == "Get" && id != null)
                     response = await client.GetAsync(string.Format(AppConfig.ProdutoApiUrl, id));
                 if (tipoApi == "Post" && id == null)
-                    response = await client.PostAsync(string.Format(AppConfig.ProdutoApiUrl,""), content);
+                    response = await client.PostAsync(string.Format(AppConfig.ProdutoApiUrl, ""), content);
                 if (tipoApi == "Put" && id != null)
                     response = await client.PutAsync(string.Format(AppConfig.ProdutoApiUrl, id), content);
-                if (tipoApi == "Delete" && id != null) 
+                if (tipoApi == "Delete" && id != null)
                     response = await client.DeleteAsync(string.Format(AppConfig.ProdutoApiUrl, id));
 
                 if (response != null && response.IsSuccessStatusCode)

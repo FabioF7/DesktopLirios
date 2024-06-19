@@ -1,16 +1,15 @@
-﻿using System;
+﻿using DesktopLirios.Common;
+using DesktopLirios.Responses;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Runtime.ConstrainedExecution;
 using System.Security;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using DesktopLirios.Common;
-using DesktopLirios.Responses;
-using Newtonsoft.Json;
 
 namespace DesktopLirios
 {
@@ -173,7 +172,7 @@ namespace DesktopLirios
         {
             grdClientes.ItemsSource = ClienteGlobal.clienteGlobal;
         }
-        
+
         private async void btnAtualizar_Click(object sender, RoutedEventArgs e)
         {
             await CarregarClientesAsync();
@@ -203,7 +202,9 @@ namespace DesktopLirios
                 var formularioPopup = new FormularioClientePopup(Cliente, jwtToken, "Editar");
                 formularioPopup.ShowDialog();
 
-                ClienteGlobal.AtualizarCliente((int)Cliente.Id, jwtToken);
+                grdClientes.ItemsSource = null;
+
+                grdClientes.ItemsSource = ClienteGlobal.clienteGlobal;
             }
             catch (NullReferenceException ex)
             {
@@ -224,9 +225,13 @@ namespace DesktopLirios
                 if (resultado == MessageBoxResult.Yes)
                 {
                     var response = await ClienteAPI.ClienteApi(null, ((ClienteResponse)grdClientes.SelectedItem).Id, "Delete", jwtToken);
-                }
 
-                ClienteGlobal.RemoverClientePorId((int)((ClienteResponse)grdClientes.SelectedItem).Id);
+                    ClienteGlobal.RemoverClientePorId((int)((ClienteResponse)grdClientes.SelectedItem).Id);
+
+                    grdClientes.ItemsSource = null;
+
+                    grdClientes.ItemsSource = ClienteGlobal.clienteGlobal;
+                }
             }
             catch (NullReferenceException ex)
             {
@@ -244,6 +249,10 @@ namespace DesktopLirios
             {
                 var formularioPopup = new FormularioClientePopup(null, jwtToken, "Cadastrar");
                 formularioPopup.ShowDialog();
+
+                grdClientes.ItemsSource = null;
+
+                grdClientes.ItemsSource = ClienteGlobal.clienteGlobal;
             }
             catch (Exception ex)
             {

@@ -1,16 +1,39 @@
 ﻿<Page
+    x:Class="DesktopLirios.PaginaClientes"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:av="http://schemas.microsoft.com/expression/blend/2008" 
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-    mc:Ignorable="av" x:Class="DesktopLirios.PaginaClientes"
     Background="White">
+
+    <Page.Resources>
+        <Style TargetType="Button">
+            <Setter Property="Background" Value="#800080"/>
+            <!-- Lilás -->
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Padding" Value="10"/>
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="20">
+                            <ContentPresenter HorizontalAlignment="Center"
+                                              VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Page.Resources>
 
     <Grid x:Name="grdTelaClientes" Width="1216" Height="768">
 
         <Button x:Name="btnAtualizar" Content="Atualizar" HorizontalAlignment="Left" Height="32" Margin="1090,22,0,0" VerticalAlignment="Top" Width="100" Click="btnAtualizar_Click" FontSize="10" FontWeight="Bold"/>
 
-        <DataGrid x:Name="grdClientes" HorizontalAlignment="Center" Height="589" VerticalAlignment="Top" Width="1165" av:ItemsSource="{av:SampleData ItemCount=5}" Margin="0,75,0,0"/>
+        <DataGrid x:Name="grdClientes" HorizontalAlignment="Center" Height="589" VerticalAlignment="Top" Width="1165" Margin="0,75,0,0"/>
         <TextBox x:Name="txtPesquisar" HorizontalAlignment="Left" Height="24" Margin="131,27,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="400" TextChanged="txtPesquisar_TextChanged"/>
         <Label Content="Nome ou Celular:" HorizontalAlignment="Left" Height="24" Margin="26,26,0,0" VerticalAlignment="Top" Width="100" FontWeight="Bold" FontSize="11"/>
         <CheckBox x:Name="cbInad" Content="Inadimplente" HorizontalAlignment="Left" Height="16" Margin="536,31,0,0" VerticalAlignment="Top" Width="95" FontWeight="Bold" FontSize="11" Checked="cbInad_Checked" Unchecked="cbInad_Unchecked"/>

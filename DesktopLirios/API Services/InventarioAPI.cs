@@ -8,9 +8,9 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-class ClienteAPI
+class InventarioAPI
 {
-    public static async Task<string?> ClienteApi(ClienteRequest? clienteRequest, int? id, string tipoApi, SecureString jwtToken)
+    public static async Task<string?> InventarioApi(InventarioRequest? inventarioRequest, int? id, string tipoApi, SecureString jwtToken)
     {
         using (HttpClient client = new HttpClient())
         {
@@ -20,20 +20,20 @@ class ClienteAPI
 
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", AppConfig.ObterTokenSecure(jwtToken));
 
-                string jsonContent = JsonSerializer.Serialize(clienteRequest);
+                string jsonContent = JsonSerializer.Serialize(inventarioRequest);
 
                 var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
 
                 if (tipoApi == "Get" && id == null)
-                    response = await client.GetAsync(string.Format(AppConfig.ClienteApiUrl, ""));
+                    response = await client.GetAsync(string.Format(AppConfig.InventarioApiUrl, ""));
                 if (tipoApi == "Get" && id != null)
-                    response = await client.GetAsync(string.Format(AppConfig.ClienteApiUrl, id));
+                    response = await client.GetAsync(string.Format(AppConfig.InventarioApiUrl, id));
                 if (tipoApi == "Post" && id == null)
-                    response = await client.PostAsync(string.Format(AppConfig.ClienteApiUrl, ""), content);
+                    response = await client.PostAsync(string.Format(AppConfig.InventarioApiUrl, ""), content);
                 if (tipoApi == "Put" && id != null)
-                    response = await client.PutAsync(string.Format(AppConfig.ClienteApiUrl, id), content);
+                    response = await client.PutAsync(string.Format(AppConfig.InventarioApiUrl, id), content);
                 if (tipoApi == "Delete" && id != null)
-                    response = await client.DeleteAsync(string.Format(AppConfig.ClienteApiUrl, id));
+                    response = await client.DeleteAsync(string.Format(AppConfig.InventarioApiUrl, id));
 
                 if (response != null && response.IsSuccessStatusCode)
                 {

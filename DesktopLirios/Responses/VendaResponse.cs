@@ -11,7 +11,7 @@ namespace DesktopLirios.Responses
         public ClienteResponse Cliente { get; set; }
         public int ProdutoId { get; set; }
         public ProdutoResponse Produto { get; set; }
-        public float CustoProduto { get; set; }  
+        public float CustoProduto { get; set; }
         public int MetodoPagamento { get; set; }
         public int Tipo { get; set; }
         public int TipoTransacao { get; set; }

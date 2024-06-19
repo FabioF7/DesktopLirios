@@ -1,23 +1,22 @@
-﻿using DesktopLirios.Requests;
+﻿using DesktopLirios.Common;
+using DesktopLirios.Requests;
 using DesktopLirios.Responses;
+using Newtonsoft.Json;
 using System;
-using System.Windows;
+using System.Collections.Generic;
 using System.Security;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
-using System.Collections.Generic;
-using System.Security.Claims;
-using DesktopLirios.Common;
+using System.Windows;
 
 namespace DesktopLirios
 {
-    public partial class FormularioHistoricoClientePopup : Window
+    public partial class HistoricoClientePopup : Window
     {
         public ClienteRequest? Cliente { get; set; }
         private SecureString jwtToken;
         private int clienteId;
 
-        public FormularioHistoricoClientePopup(SecureString token, int id)
+        public HistoricoClientePopup(SecureString token, int id)
         {
             InitializeComponent();
             DataContext = this;
