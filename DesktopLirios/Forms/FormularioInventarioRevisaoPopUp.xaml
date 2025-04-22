@@ -1,0 +1,40 @@
+﻿<Window
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:av="http://schemas.microsoft.com/expression/blend/2008" 
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    mc:Ignorable="av" x:Class="DesktopLirios.FormularioInventarioRevisaoPopUp"
+    Background="White"
+    Title="Revisão Inventário" Width="1366" Height="768" HorizontalAlignment="Center" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
+
+    <Window.Resources>
+        <Style TargetType="Button">
+            <Setter Property="Background" Value="#800080"/>
+            <!-- Lilás -->
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Padding" Value="10"/>
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="20">
+                            <ContentPresenter HorizontalAlignment="Center"
+                                              VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+
+    <Grid x:Name="grdTelaInventario" Width="1216" Height="768">
+        <DataGrid x:Name="grdRevisao" HorizontalAlignment="Center" Height="566" VerticalAlignment="Center" Width="1138" ItemsSource="{Binding ProdutoResponse}"/>
+        <Button x:Name="btnVoltar" Content="Voltar" HorizontalAlignment="Left" Height="33" VerticalAlignment="Top" Width="93" Margin="972,63,0,0" Click="btnVoltar_Click"/>
+        <Button x:Name="btnAprovar" Content="Aprovar" HorizontalAlignment="Left" Height="33" VerticalAlignment="Top" Width="93" Margin="1084,63,0,0" Click="btnAprovar_Click"/>
+    </Grid>
+</Window>

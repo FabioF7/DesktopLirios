@@ -1,7 +1,7 @@
 ﻿<Window x:Class="DesktopLirios.FormularioClientePopup"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Height="320" Width="600">
+        Title="Cliente" Height="316" Width="600" HorizontalAlignment="Center" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
 
     <Window.Resources>
         <Style TargetType="Button">

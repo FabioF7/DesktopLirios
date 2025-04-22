@@ -4,7 +4,7 @@
         xmlns:av="http://schemas.microsoft.com/expression/blend/2008" 
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
         mc:Ignorable="av" x:Class="DesktopLirios.FormularioVendasPopup"
-        Height="420" Width="750">
+        Title="Venda" Height="413" Width="750" HorizontalAlignment="Center" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
 
     <Window.Resources>
         <Style TargetType="Button">

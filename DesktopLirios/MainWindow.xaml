@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DesktopLirios"
         mc:Ignorable="d"
-        Title="MainWindow" Height="384" Width="683">
+        Title="Login" Height="384" Width="683">
     <Grid>
         <TextBox x:Name="txUsuario" HorizontalAlignment="Center" Margin="0,161,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" FontFamily="Calibri" Height="18"/>
         <PasswordBox x:Name="txSenha" HorizontalAlignment="Center" Margin="0,184,0,0" VerticalAlignment="Top" Width="120"/>

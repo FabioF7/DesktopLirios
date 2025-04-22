@@ -22,12 +22,14 @@ namespace DesktopLirios
         private List<ProdutoResponse> listaInventario = new List<ProdutoResponse>();
         public InventarioRequest? Inventario { get; set; } = new InventarioRequest();
         private List<KeyValuePair<int?, ProdutoResponse>> listaProdutos;
+        private int? idInventario;
 
-        public FormularioInventarioCadPopUp(SecureString token)
+        public FormularioInventarioCadPopUp(SecureString token, int? id)
         {
             InitializeComponent();
-            CenterWindowOnScreen();
             jwtToken = token;
+            idInventario = id;
+            CenterWindowOnScreen();
             CarregarProdutosAsync();
             txtProdutoInventario.Focus();
         }
@@ -60,7 +62,31 @@ namespace DesktopLirios
 
                 ConfigureDataGridColumns();
 
-                grdTodos.ItemsSource = listaInventario;
+                if (idInventario != null)
+                {
+                    response = await InventarioDetalhesAPI.InventarioDetalhesApi(null, idInventario, "Get", jwtToken);
+
+                    var inventarioSalvo = JsonConvert.DeserializeObject<List<InventarioDetalhesResponse>>(response);
+
+                    foreach (InventarioDetalhesResponse id in inventarioSalvo)
+                    {
+                        for (int i = 0; i < id.Contabilizado.Value; i++)
+                        {
+                            AdicionarProdutoAoEstoqueTemporario(id.IdProduto.ToString());
+                            AtualizarExibicaoEstoqueTemporario(id.IdProduto.ToString());
+                        }
+                    }
+
+                    grdTodos.ItemsSource = listaInventario;
+                    grdTodos.Items.Refresh();
+
+                    txtProdutoInventario.Clear();
+                    txtProdutoInventario.Focus();
+                }
+                else
+                {
+                    grdTodos.ItemsSource = listaInventario;
+                }
             }
             catch (Exception ex)
             {
@@ -146,8 +172,6 @@ namespace DesktopLirios
         {
             if (lbProduto.SelectedItem is KeyValuePair<int?, ProdutoResponse> selectedProduto)
             {
-                List<ProdutoResponse> produtoGlobal = ProdutoGlobal.produtoGlobal;
-
                 int selectedId = (int)selectedProduto.Key;
 
                 if (!string.IsNullOrEmpty(selectedId.ToString()))
@@ -208,24 +232,54 @@ namespace DesktopLirios
 
             if (resultado == MessageBoxResult.Yes)
             {
-                Inventario.Contado_por = "Admin";
-                Inventario.Situacao = "Incompleto";
-                Inventario.Inicio = DateTime.Now;
+                await SalvarInventario(idInventario);
 
-                foreach(int prod in estoqueTemporario.Values)
+                this.Close();
+            }
+        }
+
+        private async void btnRevisar_Click(object sender, RoutedEventArgs e)
+        {
+            var resultado = MessageBox.Show("Você tem certeza que deseja revisar a contagem do Inventário?", "Confirmação", MessageBoxButton.YesNo, MessageBoxImage.Question);
+
+            if (resultado == MessageBoxResult.Yes)
+            {
+                FormularioInventarioRevisaoPopUp formularioPopup;
+
+                await SalvarInventario(idInventario);
+
+                if (idInventario != null)
                 {
-                    if (Inventario.Contabilizado_Total == null)
-                    {
-                        Inventario.Contabilizado_Total = prod;
-                    }
-                    else
-                    {
-                        Inventario.Contabilizado_Total += prod;
-                    }
+                    formularioPopup = new FormularioInventarioRevisaoPopUp(jwtToken, idInventario);
+                    formularioPopup.ShowDialog();
                 }
+            }
+        }
 
-                try
+        private async Task SalvarInventario(int? id)
+        {
+            string response = "";
+
+            foreach (int prod in estoqueTemporario.Values)
+            {
+                if (Inventario.Contabilizado_Total == null)
                 {
+                    Inventario.Contabilizado_Total = prod;
+                }
+                else
+                {
+                    Inventario.Contabilizado_Total += prod;
+                }
+            }
+
+            try
+            {
+                if (id == null)
+                {
+                    Inventario.Contado_por = "Admin";
+                    Inventario.Situacao = "Incompleto";
+                    Inventario.Inicio = DateTime.Now;
+
                     var formularioPopup = new FormularioInventarioInfosPopUp();
                     formularioPopup.ShowDialog();
 
@@ -233,54 +287,45 @@ namespace DesktopLirios
                     Inventario.Obsevacoes = formularioPopup.Obsevacoes;
                     Inventario.Revisado_por = "";
 
-                    var response = await InventarioAPI.InventarioApi(Inventario, null, "Post", jwtToken);
+                    response = await InventarioAPI.InventarioApi(Inventario, null, "Post", jwtToken);
+                }
+                else
+                {
+                    //incluir chamada para update ao "pausar" a contagem novamente
+                }
 
-                    if (response != null) {
+                if (response != "")
+                {
 
-                        List<InventarioDetalhesRequest> InventarioDetalhes = new List<InventarioDetalhesRequest>();
+                    List<InventarioDetalhesRequest> InventarioDetalhes = new List<InventarioDetalhesRequest>();
 
-                        var lista = listaInventario.Where(p => p.Contabilizado > 0);
+                    var lista = listaInventario.Where(p => p.Contabilizado > 0);
 
-                        JObject jsonObject = JObject.Parse(response);
+                    JObject jsonObject = JObject.Parse(response);
 
-                        int idInventario = (int)jsonObject["id"];
+                    idInventario = (int)jsonObject["id"];
 
-                        foreach (var item in lista) {
+                    foreach (var item in lista)
+                    {
 
-                            InventarioDetalhesRequest detalhes = new InventarioDetalhesRequest
-                            {
-                                IdInventario = idInventario,
-                                IdProduto = item.Id,
-                                Previsao = item.Quantidade,
-                                Contabilizado = estoqueTemporario.Where(e => e.Key == item.Id.ToString()).Select(e => e.Value).FirstOrDefault()
-                            };
+                        InventarioDetalhesRequest detalhes = new InventarioDetalhesRequest
+                        {
+                            IdInventario = idInventario,
+                            IdProduto = item.Id,
+                            Previsao = item.Quantidade,
+                            Contabilizado = estoqueTemporario.Where(e => e.Key == item.Id.ToString()).Select(e => e.Value).FirstOrDefault()
+                        };
 
-                            InventarioDetalhes.Add(detalhes);
-                        }
-
-                        response = await InventarioDetalhesAPI.InventarioDetalhesApi(InventarioDetalhes, null, "Post", jwtToken);
+                        InventarioDetalhes.Add(detalhes);
                     }
 
+                    response = await InventarioDetalhesAPI.InventarioDetalhesApi(InventarioDetalhes, null, "Post", jwtToken);
                 }
-                catch (Exception ex)
-                {
-                    MessageBox.Show($"Erro ao salvar novo inventário: {ex.Message}");
-                }
-
-                this.Close();
 
             }
-        }
-
-        private void btnRevisar_Click(object sender, RoutedEventArgs e)
-        {
-            var resultado = MessageBox.Show("Você tem certeza que deseja revisar a contagem do Inventário?", "Confirmação", MessageBoxButton.YesNo, MessageBoxImage.Question);
-
-            if (resultado == MessageBoxResult.Yes)
+            catch (Exception ex)
             {
-
-                //Salva Produtos contados.
-
+                MessageBox.Show($"Erro ao salvar novo inventário: {ex.Message}");
             }
         }
     }

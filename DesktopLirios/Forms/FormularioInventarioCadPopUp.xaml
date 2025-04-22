@@ -4,7 +4,8 @@
     xmlns:av="http://schemas.microsoft.com/expression/blend/2008" 
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
     mc:Ignorable="av" x:Class="DesktopLirios.FormularioInventarioCadPopUp"
-    Background="White">
+    Background="White"
+    Title="Inventário" Width="1366" Height="768" HorizontalAlignment="Center" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
 
     <Window.Resources>
         <Style TargetType="Button">
@@ -32,7 +33,7 @@
     </Window.Resources>
 
     <Grid x:Name="grdTelaInventario" Width="1216" Height="768">
-        <DataGrid x:Name="grdTodos" HorizontalAlignment="Center" Height="566" VerticalAlignment="Center" Width="1138" ItemsSource="{Binding ProdutoResponse}"/>
+        <DataGrid x:Name="grdTodos" HorizontalAlignment="Center" Height="566" VerticalAlignment="Center" Width="1138" ItemsSource="{Binding InventarioDetalhesResponse}"/>
         <TextBox x:Name="txtProdutoInventario" HorizontalAlignment="Left" Height="24" Margin="123,71,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="400" FontSize="16" PreviewKeyDown="txtProdutoInventario_PreviewKeyDown" TextChanged="txtProdutoInventario_TextChanged"/>
         <ListBox x:Name="lbProduto" Width="400" Height="80" Margin="123,95,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" SelectionChanged="lbProduto_SelectionChanged" Visibility="Collapsed">
             <ListBox.ItemTemplate>

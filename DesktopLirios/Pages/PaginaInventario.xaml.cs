@@ -95,21 +95,39 @@ namespace DesktopLirios
             await CarregarInventariosAsync();
         }
 
-        private void btnNovo_Click(object sender, RoutedEventArgs e)
+        private async void btnNovo_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-                var formularioPopup = new FormularioInventarioCadPopUp(jwtToken);
+                var formularioPopup = new FormularioInventarioCadPopUp(jwtToken, null);
                 formularioPopup.ShowDialog();
             }
             catch (Exception ex)
             {
                 MessageBox.Show($"Erro ao carregar novo inventario: {ex.Message}");
             }
+
+            await CarregarInventariosAsync();
+
         }
 
-        private void btnAbrir_Click(object sender, RoutedEventArgs e)
+        private async void btnAbrir_Click(object sender, RoutedEventArgs e)
         {
+            try
+            {
+                var formularioPopup = new FormularioInventarioCadPopUp(jwtToken, ((InventarioResponse)grdTodos.SelectedItem).Id);
+                formularioPopup.ShowDialog();
+            }
+            catch (NullReferenceException ex)
+            {
+                MessageBox.Show("Nenhum Inventário selecionado!");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Erro ao carregar novo inventario: {ex.Message}");
+            }
+
+            await CarregarInventariosAsync();
 
         }
     }

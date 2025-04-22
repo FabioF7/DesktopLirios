@@ -25,8 +25,6 @@ class InventarioDetalhesAPI
 
                 var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
 
-                if (tipoApi == "Get" && id == null)
-                    response = await client.GetAsync(string.Format(AppConfig.InventarioDetalhesApiUrl, ""));
                 if (tipoApi == "Get" && id != null)
                     response = await client.GetAsync(string.Format(AppConfig.InventarioDetalhesApiUrl, id));
                 if (tipoApi == "Post" && id == null)
