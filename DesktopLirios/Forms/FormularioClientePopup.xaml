@@ -1,77 +1,150 @@
 ﻿<Window x:Class="DesktopLirios.FormularioClientePopup"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Cliente" Height="316" Width="600" HorizontalAlignment="Center" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
+        Background="{StaticResource BackgroundBrush}"
+        WindowStartupLocation="CenterOwner"
+        SizeToContent="WidthAndHeight"
+        ResizeMode="NoResize">
 
-    <Window.Resources>
-        <Style TargetType="Button">
-            <Setter Property="Background" Value="#800080"/>
-            <!-- Lilás -->
-            <Setter Property="Foreground" Value="White"/>
-            <Setter Property="FontSize" Value="16"/>
-            <Setter Property="FontWeight" Value="Bold"/>
-            <Setter Property="Padding" Value="10"/>
-            <Setter Property="Margin" Value="5"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="Button">
-                        <Border Background="{TemplateBinding Background}"
-                                BorderBrush="{TemplateBinding BorderBrush}"
-                                BorderThickness="{TemplateBinding BorderThickness}"
-                                CornerRadius="20">
-                            <ContentPresenter HorizontalAlignment="Center"
-                                              VerticalAlignment="Center"/>
-                        </Border>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-    </Window.Resources>
+    <Grid Margin="16">
+        <StackPanel>
+            <!-- Dados Pessoais -->
+            <GroupBox Header="Dados Pessoais" Margin="0,0,0,12">
+                <Grid Margin="8,4,8,4">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="2*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
 
-    <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Height="286" Width="580">
-        <TextBlock Text="Nome:" VerticalAlignment="Top" Width="40" FontWeight="Bold" Height="21" HorizontalAlignment="Left" Margin="10,10,0,0" RenderTransformOrigin="0.225,-1.522"/>
-        <TextBox x:Name="txtNome" Width="250" Height="21" Margin="55,10,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-        <TextBlock Text="DtNascimento:" Width="90" Margin="325,10,0,0" Height="21" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-        <DatePicker x:Name="dpDtNascimento" Width="150" Height="24" Margin="420,7,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                    <!-- Nome -->
+                    <Label Grid.Row="0" Grid.Column="0" Content="Nome:" VerticalAlignment="Center"/>
+                    <TextBox x:Name="txtNome" Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2" Margin="5,0,0,8"/>
 
-        <TextBlock Text="Email:" VerticalAlignment="Top" Width="40" Margin="10,46,0,0" FontWeight="Bold" HorizontalAlignment="Left" Height="21"/>
-        <TextBox x:Name="txtEmail" Width="250" Height="21" Margin="55,46,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-        <TextBlock Text="Celular:" Width="50" Margin="350,46,0,0" Height="21" HorizontalAlignment="Left" VerticalAlignment="Top" FontWeight="Bold"/>
-        <TextBox x:Name="txtCelular" Width="165" Height="21" Margin="405,46,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                    <!-- Data Nascimento -->
+                    <Label Grid.Row="1" Grid.Column="0" Content="Dt. Nascimento:" VerticalAlignment="Center"/>
+                    <DatePicker x:Name="dpDtNascimento" Grid.Row="1" Grid.Column="1" Margin="5,0,0,8"/>
 
-        <TextBlock Text="CEP:" VerticalAlignment="Top" Width="40" Margin="425,85,0,0" Height="21" FontWeight="Bold" HorizontalAlignment="Left"/>
-        <TextBox x:Name="txtCEP" Width="100" Height="21" Margin="470,85,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-        <TextBlock Text="Endereco:" Width="60" Margin="10,85,0,0" Height="21" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-        <TextBox x:Name="txtEndereco" Width="300" Height="21" Margin="75,85,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                    <!-- Sexo -->
+                    <Label Grid.Row="1" Grid.Column="2" Content="Sexo:" VerticalAlignment="Center"/>
+                    <ComboBox x:Name="cbSexo" Grid.Row="1" Grid.Column="2" Margin="60,0,0,8" Width="100">
+                        <ComboBoxItem Content="Masculino" Tag="Masc"/>
+                        <ComboBoxItem Content="Feminino" Tag="Fem"/>
+                    </ComboBox>
+                </Grid>
+            </GroupBox>
 
-        <TextBlock Text="Sexo:" VerticalAlignment="Top" Width="40" Margin="10,121,0,0" FontWeight="Bold" Height="21" HorizontalAlignment="Left"/>
-        <ComboBox x:Name="cbSexo" Width="110" Height="21" Margin="50,121,0,0" HorizontalAlignment="Left" VerticalAlignment="Top">
-            <ComboBoxItem Content="Masculino" Tag="Masc"/>
-            <ComboBoxItem Content="Feminino" Tag="Fem"/>
-        </ComboBox>
+            <!-- Contato e Endereço -->
+            <GroupBox Header="Contato e Endereço" Margin="0,0,0,12" Height="161">
+                <Grid Margin="8,4,8,4">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
 
-        <TextBlock Text="Indicacao:" Margin="165,121,0,0" Width="60" Height="21" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="0.083,0.573"/>
-        <TextBox x:Name="txtIndicacao" Width="150" Height="21" Margin="230,122,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                    <!-- Email -->
+                    <Label Grid.Row="0" Grid.Column="0" Content="Email:" VerticalAlignment="Center"/>
+                    <TextBox x:Name="txtEmail" Grid.Row="0" Grid.Column="1" Margin="5,0,0,8"/>
 
-        <TextBlock Text="Bloqueado:" VerticalAlignment="Top" Width="74" Margin="391,122,0,0" FontWeight="Bold" HorizontalAlignment="Left" Height="21"/>
-        <RadioButton x:Name="rbSim" Content="Sim" Height="19" Width="50" Margin="475,125,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-        <RadioButton x:Name="rbNao" Content="Não" Height="20" Width="50" Margin="520,125,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                    <!-- Celular -->
+                    <Label Grid.Row="1" Grid.Column="0" Content="Celular:" VerticalAlignment="Center"/>
+                    <TextBox x:Name="txtCelular" Grid.Row="1" Grid.Column="1" Margin="5,0,0,8"/>
 
-        <Button x:Name="btnSalvar" Content="Salvar" Click="btnSalvar_ClickAsync" Height="22" Width="62" Margin="500,250,18,14" FontWeight="Bold" FontSize="10"/>
-        <TextBlock Text="Inadimplente?:" VerticalAlignment="Top" Width="85" Margin="10,157,0,0" FontWeight="Bold" Height="21" HorizontalAlignment="Left"/>
-        <CheckBox x:Name="cbSim" Content="Sim" HorizontalAlignment="Left" Height="22" Margin="100,158,0,0" VerticalAlignment="Top" Width="55"/>
-        <TextBlock Text="Limite:" VerticalAlignment="Top" Width="51" Margin="439,157,0,0" FontWeight="Bold" Height="21" HorizontalAlignment="Left"/>
-        <TextBox x:Name="txtLimite" HorizontalAlignment="Left" Height="21" Margin="495,157,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="75"/>
-        <TextBlock Text="Observações:" VerticalAlignment="Top" Width="80" Margin="10,192,0,0" FontWeight="Bold" Height="21" HorizontalAlignment="Left"/>
-        <TextBox x:Name="txtObservacao" Width="475" Height="44" Margin="95,192,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-        <TextBox x:Name="txtValDivida" HorizontalAlignment="Left" Height="22" Margin="273,157,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="118"/>
-        <Label Content="Valor Divida:" HorizontalAlignment="Left" Margin="186,152,0,0" VerticalAlignment="Top" FontWeight="Bold"/>
-        <TextBox x:Name="txtPagou" HorizontalAlignment="Left" Height="22" Margin="55,250,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="60"/>
-        <Label x:Name="lblPagou" Content="Pagou:" HorizontalAlignment="Left" Height="22" Margin="10,250,0,0" VerticalAlignment="Top" Width="40" FontSize="9" FontWeight="Bold"/>
-        <Button x:Name="btnOk" Content="OK" HorizontalAlignment="Left" Height="22" Margin="120,250,0,0" VerticalAlignment="Top" Width="20" FontSize="8" FontWeight="Bold" Click="btnOk_ClickAsync"/>
-        <Button x:Name="btnVenda" Content="Venda" HorizontalAlignment="Left" Height="22" Margin="433,250,0,0" VerticalAlignment="Top" Width="62" FontWeight="Bold" FontSize="10" Click="btnVenda_Click"/>
+                    <!-- CEP -->
+                    <Label Grid.Row="2" Grid.Column="0" Content="CEP:" VerticalAlignment="Center"/>
+                    <TextBox x:Name="txtCEP" Grid.Row="2" Grid.Column="1" Margin="5,0,0,8"/>
 
-        <Button x:Name="btnHistorico" Content="Historico" HorizontalAlignment="Left" Height="22" Margin="366,250,0,0" VerticalAlignment="Top" Width="62" FontWeight="Bold" FontSize="10" Click="btnHistorico_Click"/>
+                    <!-- Endereço -->
+                    <Label Grid.Row="3" Grid.Column="0" Content="Endereço:" VerticalAlignment="Center"/>
+                    <TextBox x:Name="txtEndereco" Grid.Row="3" Grid.Column="1" Margin="5,0,0,8"/>
+                </Grid>
+            </GroupBox>
 
+            <!-- Situação Financeira -->
+            <GroupBox Header="Situação Financeira" Margin="0,0,0,12">
+                <Grid Margin="8,4,8,4">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <!-- Limite -->
+                    <Label Grid.Row="0" Grid.Column="0" Content="Limite:" VerticalAlignment="Center"/>
+                    <TextBox x:Name="txtLimite" Grid.Row="0" Grid.Column="1" Margin="5,0,0,8"/>
+
+                    <!-- Valor Dívida -->
+                    <Label Grid.Row="1" Grid.Column="0" Content="Valor Dívida:" VerticalAlignment="Center"/>
+                    <TextBox x:Name="txtValDivida" Grid.Row="1" Grid.Column="1" Margin="5,0,0,8"/>
+
+                    <!-- Pagou -->
+                    <Label Grid.Row="2" Grid.Column="0" Content="Pagou:" VerticalAlignment="Center"/>
+                    <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Horizontal" Margin="5,0,0,8" Grid.RowSpan="2" Cursor="">
+                        <TextBox x:Name="txtPagou" Width="100" Margin="0,0,8,0"/>
+                        <Button x:Name="btnOk" Content="OK" Width="40" Click="btnOk_ClickAsync"/>
+                    </StackPanel>
+                </Grid>
+            </GroupBox>
+
+            <!-- Outros Dados -->
+            <GroupBox Header="Outros Dados" Margin="0,0,0,12">
+                <Grid Margin="8,4,8,4">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <!-- Indicação -->
+                    <Label Grid.Row="0" Grid.Column="0" Content="Indicação:" VerticalAlignment="Center"/>
+                    <TextBox x:Name="txtIndicacao" Grid.Row="0" Grid.Column="1" Margin="5,0,0,8"/>
+
+                    <!-- Bloqueado -->
+                    <Label Grid.Row="1" Grid.Column="0" Content="Bloqueado:" VerticalAlignment="Center"/>
+                    <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal" Margin="5,0,0,0">
+                        <RadioButton x:Name="rbSim" Content="Sim" Margin="0,0,8,0"/>
+                        <RadioButton x:Name="rbNao" Content="Não"/>
+                    </StackPanel>
+
+                    <!-- Inadimplente -->
+                    <Label Grid.Row="2" Grid.Column="0" Content="Inadimplente:" VerticalAlignment="Center"/>
+                    <CheckBox x:Name="cbSim" Grid.Row="2" Grid.Column="1" Content="Sim"/>
+                </Grid>
+            </GroupBox>
+
+            <!-- Observações expandidas -->
+            <GroupBox Header="Observações" Margin="0,0,0,16">
+                <TextBox x:Name="txtObservacao"
+                   Height="60"
+                   AcceptsReturn="True"
+                   TextWrapping="Wrap"
+                   Margin="8"/>
+            </GroupBox>
+
+            <!-- Botões de ação -->
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,8,0,0" >
+                <Button x:Name="btnVenda" Content="Venda" MinWidth="80" Margin="0,0,8,0" Click="btnVenda_Click"/>
+                <Button x:Name="btnHistorico" Content="Historico" MinWidth="80" Margin="0,0,8,0" Click="btnHistorico_Click"/>
+                <Button x:Name="btnSalvar" Content="Salvar" MinWidth="80" Margin="0,0,8,0" Click="btnSalvar_ClickAsync"/>
+            </StackPanel>
+        </StackPanel>
     </Grid>
 </Window>

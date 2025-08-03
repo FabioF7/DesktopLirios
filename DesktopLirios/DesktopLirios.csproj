@@ -17,6 +17,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Resources\LogoLirios.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Update="Forms\FormularioInventarioRevisaoPopUp.xaml.cs">
       <SubType>Code</SubType>
     </Compile>

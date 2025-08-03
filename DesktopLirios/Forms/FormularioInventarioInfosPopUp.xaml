@@ -1,43 +1,48 @@
 ﻿<Window x:Class="DesktopLirios.FormularioInventarioInfosPopUp"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Infos Inventário" Height="155" Width="500" HorizontalAlignment="Center" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
+        Title="Infos Inventário"
+        WindowStartupLocation="CenterOwner"
+        Background="{StaticResource BackgroundBrush}"
+        Width="500"
+        Height="280"
+        ResizeMode="CanResizeWithGrip">
 
-    <Window.Resources>
-        <Style TargetType="Button">
-            <Setter Property="Background" Value="#800080"/>
-            <!-- Lilás -->
-            <Setter Property="Foreground" Value="White"/>
-            <Setter Property="FontSize" Value="16"/>
-            <Setter Property="FontWeight" Value="Bold"/>
-            <Setter Property="Padding" Value="10"/>
-            <Setter Property="Margin" Value="5"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="Button">
-                        <Border Background="{TemplateBinding Background}"
-                                BorderBrush="{TemplateBinding BorderBrush}"
-                                BorderThickness="{TemplateBinding BorderThickness}"
-                                CornerRadius="20">
-                            <ContentPresenter HorizontalAlignment="Center"
-                                              VerticalAlignment="Center"/>
-                        </Border>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-    </Window.Resources>
+    <Grid Margin="24">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
 
-    <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Height="125" Width="480">
-        <TextBlock Text="Nome Inventário:" VerticalAlignment="Top" Width="104" FontWeight="Bold" Height="21" HorizontalAlignment="Left" Margin="10,10,0,0" RenderTransformOrigin="0.225,-1.522"/>
-        <TextBox x:Name="txtNomeInventario" Width="351" Height="21" Margin="119,10,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        <!-- Nome Inventário -->
+        <Label Grid.Row="0" Grid.Column="0" Content="Nome Inventário:" VerticalAlignment="Center" Margin="0,0,12,0"/>
+        <TextBox x:Name="txtNomeInventario"
+                 Grid.Row="0" Grid.Column="1"
+                 Style="{StaticResource AccentTextBoxStyle}"
+                 Margin="0,0,0,12"/>
 
-        <Button x:Name="btnContinuar" Content="Continuar" Margin="408,94,10,9" FontWeight="Bold" FontSize="10" Width="62" Height="22" Click="btnContinuar_Click"/>
-        <TextBlock Text="Observações:" VerticalAlignment="Top" Width="80" Margin="10,45,0,0" FontWeight="Bold" Height="21" HorizontalAlignment="Left"/>
-        <TextBox x:Name="txtObservacao" Width="375" Height="38" Margin="95,45,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        <!-- Observações -->
+        <Label Grid.Row="1" Grid.Column="0" Content="Observações:" VerticalAlignment="Top" Margin="0,0,12,0"/>
+        <TextBox x:Name="txtObservacao"
+                 Grid.Row="1" Grid.Column="1"
+                 Style="{StaticResource AccentTextBoxStyle}"
+                 Height="60"
+                 AcceptsReturn="True"
+                 TextWrapping="Wrap"
+                 Margin="0,3,0,79"/>
 
+        <!-- Botão Continuar -->
+        <StackPanel Grid.Row="2" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button x:Name="btnContinuar"
+                    Content="Continuar"
+                    MinWidth="100"
+                    Style="{StaticResource ButtonStyle}"
+                    Click="btnContinuar_Click"/>
+        </StackPanel>
     </Grid>
-
-
-
 </Window>

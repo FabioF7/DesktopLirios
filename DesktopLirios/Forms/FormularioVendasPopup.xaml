@@ -1,87 +1,129 @@
 ﻿<Window
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:av="http://schemas.microsoft.com/expression/blend/2008" 
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-        mc:Ignorable="av" x:Class="DesktopLirios.FormularioVendasPopup"
-        Title="Venda" Height="413" Width="750" HorizontalAlignment="Center" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
+    x:Class="DesktopLirios.FormularioVendasPopup"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    Title="Venda"
+    Background="{StaticResource BackgroundBrush}"
+    WindowStartupLocation="CenterOwner"
+    SizeToContent="WidthAndHeight"
+    ResizeMode="NoResize">
 
-    <Window.Resources>
-        <Style TargetType="Button">
-            <Setter Property="Background" Value="#800080"/>
-            <!-- Lilás -->
-            <Setter Property="Foreground" Value="White"/>
-            <Setter Property="FontSize" Value="16"/>
-            <Setter Property="FontWeight" Value="Bold"/>
-            <Setter Property="Padding" Value="10"/>
-            <Setter Property="Margin" Value="5"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="Button">
-                        <Border Background="{TemplateBinding Background}"
-                                BorderBrush="{TemplateBinding BorderBrush}"
-                                BorderThickness="{TemplateBinding BorderThickness}"
-                                CornerRadius="20">
-                            <ContentPresenter HorizontalAlignment="Center"
-                                              VerticalAlignment="Center"/>
-                        </Border>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-    </Window.Resources>
+    <Grid Margin="16">
+        <StackPanel>
+            <!-- Dados do Cliente -->
+            <GroupBox Header="Dados do Cliente" Margin="0,0,0,12">
+                <Grid Margin="8,4,8,4">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="2*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
 
-    <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Height="383" Width="730">
-        <TextBlock Text="Nome Cliente:" VerticalAlignment="Top" Width="85" FontWeight="Bold" Height="21" HorizontalAlignment="Left" Margin="10,10,0,0" RenderTransformOrigin="0.225,-1.522"/>
-        <TextBox x:Name="txtClienteSearch" Width="306" Height="21" Margin="100,10,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" TextChanged="txtClienteSearch_TextChanged"/>
-        <ListBox x:Name="lbClientes" Width="306" Height="80" Margin="100,31,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" SelectionChanged="lbClientes_SelectionChanged" Visibility="Collapsed">
-            <ListBox.ItemTemplate>
-                <DataTemplate>
-                    <TextBlock>
-                <Run Text="{Binding Value.Nome}" />
-                <Run Text=" - " />
-                <Run Text="{Binding Value.Celular}" />
-                    </TextBlock>
-                </DataTemplate>
-            </ListBox.ItemTemplate>
-        </ListBox>
-        
-        <TextBlock Text="Valor Total Venda:" VerticalAlignment="Top" Width="108" Margin="10,315,0,0" FontWeight="Bold" HorizontalAlignment="Left" Height="21"/>
-        <TextBox x:Name="txtValTotal" Width="88" Height="21" Margin="123,315,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                    <!-- Nome Cliente -->
+                    <Label Grid.Row="0" Grid.Column="0" Content="Nome Cliente:" VerticalAlignment="Center"/>
+                    <TextBox x:Name="txtClienteSearch" Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2" Margin="0,0,0,8" TextChanged="txtClienteSearch_TextChanged"/>
+                    
+                    <!-- Sugestão de clientes -->
+                    <ListBox x:Name="lbClientes" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Height="80" Margin="5,0,0,8" SelectionChanged="lbClientes_SelectionChanged" Visibility="Collapsed">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock>
+                                    <Run Text="{Binding Value.Nome}" />
+                                    <Run Text=" - " />
+                                    <Run Text="{Binding Value.Celular}" />
+                                </TextBlock>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </Grid>
+            </GroupBox>
 
-        <TextBlock Text="Pagamento:" VerticalAlignment="Top" Width="70" Margin="218,315,0,0" Height="21" FontWeight="Bold" HorizontalAlignment="Left"/>
-        <ComboBox x:Name="cbMetPag" Width="110" Height="21" Margin="293,315,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" SelectionChanged="cbMetPag_SelectionChanged">
-            <ComboBoxItem Content="A Pagar"/>
-            <ComboBoxItem Content="Dinheiro"/>
-            <ComboBoxItem Content="Pix"/>
-            <ComboBoxItem Content="Débito"/>
-            <ComboBoxItem Content="Crédito a Vista"/>
-            <ComboBoxItem Content="Parcelado"/>
-            <ComboBoxItem Content="Crédito Parcelado"/>
-        </ComboBox>
+            <!-- Produtos da Venda -->
+            <GroupBox Header="Produtos da Venda" Margin="0,0,0,12">
+                <Grid Margin="8,4,8,4">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="3*" />
+                    </Grid.ColumnDefinitions>
 
-        <Button x:Name="btnSalvar" Content="Salvar" Click="btnSalvar_ClickAsync" Height="22" Width="62" Margin="652,345,16,16" FontWeight="Bold" FontSize="10"/>
-        <CheckBox x:Name="chbPreVenda" Content="Pré-Venda" HorizontalAlignment="Left" Height="17" Margin="642,12,0,0" VerticalAlignment="Top" Width="78" FontSize="11" FontWeight="Bold" Checked="chbPreVenda_Checked" Unchecked="chbPreVenda_Unchecked"/>
-        <DataGrid x:Name="grdProdVenda" HorizontalAlignment="Center" Height="237" VerticalAlignment="Center" Width="710" av:ItemsSource="{av:SampleData ItemCount=5}" CellEditEnding="grdProdVenda_CellEditEnding"/>
-        <TextBlock x:Name="lblValPag" Text="Valor Pago:" VerticalAlignment="Top" Width="69" Margin="125,352,0,0" FontWeight="Bold" HorizontalAlignment="Left" Height="21" Visibility="Hidden"/>
-        <TextBox x:Name="txtValPag" Width="88" Height="21" Margin="200,352,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Visibility="Hidden"/>
-        <Button x:Name="btnExcluirProd" Content="Excluir" HorizontalAlignment="Left" Height="15" Margin="663,50,0,0" VerticalAlignment="Top" Width="57" FontSize="9" FontWeight="Bold" Click="btnExcluirProd_Click"/>
-        <TextBlock Text="Lucro:" VerticalAlignment="Top" Width="42" Margin="10,352,0,0" FontWeight="Bold" HorizontalAlignment="Left" Height="21"/>
-        <TextBox x:Name="txtValLucro" Width="65" Height="21" Margin="52,352,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-        <TextBlock Text="Produto:" VerticalAlignment="Top" Width="52" FontWeight="Bold" Height="21" HorizontalAlignment="Left" Margin="10,47,0,0" RenderTransformOrigin="0.225,-1.522"/>
-        <TextBox x:Name="txtProdutoSearch" Width="591" Height="21" Margin="67,47,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" TextChanged="txtProdutoSearch_TextChanged"/>
-        <ListBox x:Name="lbProduto" Margin="67,68,0,0" Width="591" Height="40" HorizontalAlignment="Left" VerticalAlignment="Top" SelectionChanged="lbProduto_SelectionChanged" Visibility="Collapsed">
-            <ListBox.ItemTemplate>
-                <DataTemplate>
-                    <TextBlock>
-                        <Run Text="{Binding Value.Nome}" />
-                        <Run Text=" - " />
-                        <Run Text="{Binding Value.Quantidade}" />
-                    </TextBlock>
-                </DataTemplate>
-            </ListBox.ItemTemplate>
-        </ListBox>
-        <ComboBox x:Name="cbParcelas" Width="160" Height="21" Margin="473,315,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" SelectionChanged="cbMetPag_SelectionChanged" Visibility="Collapsed"></ComboBox>
-        <TextBlock x:Name="lbParcelas" Text="Parcelas:" VerticalAlignment="Top" Width="52" Margin="416,315,0,0" Height="21" FontWeight="Bold" HorizontalAlignment="Left" Visibility="Collapsed"/>
+                    <!-- Produto -->
+                    <Label Grid.Row="0" Grid.Column="0" Content="Produto:" VerticalAlignment="Center"/>
+                    <TextBox x:Name="txtProdutoSearch" Grid.Row="0" Grid.Column="1" Margin="0,0,0,8" TextChanged="txtProdutoSearch_TextChanged"/>
+                    <!-- Sugestão de produtos -->
+                    <ListBox x:Name="lbProduto" Grid.Row="1" Grid.Column="1" Height="40" Margin="5,0,0,8" SelectionChanged="lbProduto_SelectionChanged" Visibility="Collapsed">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock>
+                                    <Run Text="{Binding Value.Nome}" />
+                                    <Run Text=" - " />
+                                    <Run Text="{Binding Value.Quantidade}" />
+                                </TextBlock>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                    <!-- Grid de produtos -->
+                    <DataGrid x:Name="grdProdVenda" Grid.Row="2" Grid.ColumnSpan="2" Height="180" Margin="0,8,0,0" CellEditEnding="grdProdVenda_CellEditEnding"/>
+                </Grid>
+            </GroupBox>
+
+            <!-- Informações de Pagamento -->
+            <GroupBox Header="Pagamento" Margin="0,0,0,12">
+                <Grid Margin="8,4,8,4">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="2*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <!-- Valor Total -->
+                    <Label Grid.Row="0" Grid.Column="0" Content="Valor Total Venda:" VerticalAlignment="Center"/>
+                    <TextBox x:Name="txtValTotal" Grid.Row="0" Grid.Column="1" Margin="5,0,0,8" Width="75"/>
+
+                    <!-- Pagamento -->
+                    <Label Grid.Row="0" Grid.Column="2" Content="Pagamento:" VerticalAlignment="Center"/>
+                    <ComboBox x:Name="cbMetPag" Grid.Row="0" Grid.Column="3" Margin="5,0,0,8" SelectionChanged="cbMetPag_SelectionChanged" Width="100">
+                        <ComboBoxItem Content="A Pagar"/>
+                        <ComboBoxItem Content="Dinheiro"/>
+                        <ComboBoxItem Content="Pix"/>
+                        <ComboBoxItem Content="Débito"/>
+                        <ComboBoxItem Content="Crédito a Vista"/>
+                        <ComboBoxItem Content="Parcelado"/>
+                        <ComboBoxItem Content="Crédito Parcelado"/>
+                    </ComboBox>
+
+                    <!-- Parcelas -->
+                    <Label x:Name="lbParcelas" Grid.Row="1" Grid.Column="2" Content="Parcelas:" VerticalAlignment="Center" Visibility="Collapsed"/>
+                    <ComboBox x:Name="cbParcelas" Grid.Row="1" Grid.Column="3" Margin="5,0,0,8" SelectionChanged="cbMetPag_SelectionChanged" Visibility="Collapsed"/>
+
+                    <!-- Valor Pago -->
+                    <Label x:Name="lblValPag" Grid.Row="1" Grid.Column="0" Content="Valor Pago:" VerticalAlignment="Center" Visibility="Hidden"/>
+                    <TextBox x:Name="txtValPag" Grid.Row="1" Grid.Column="1" Margin="5,0,0,8" Visibility="Hidden"/>
+
+                    <!-- Lucro -->
+                    <Label Grid.Row="1" Grid.Column="0" Content="Lucro:" VerticalAlignment="Center"/>
+                    <TextBox x:Name="txtValLucro" Grid.Row="1" Grid.Column="1" Margin="5,0,0,8"/>
+                </Grid>
+            </GroupBox>
+
+            <!-- Botões de ação -->
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,8,0,0">
+                <CheckBox x:Name="chbPreVenda" Content="Pré-Venda" Margin="0,0,8,0" Checked="chbPreVenda_Checked" Unchecked="chbPreVenda_Unchecked"/>
+                <Button x:Name="btnExcluirProd" Content="Excluir Produto" MinWidth="100" Click="btnExcluirProd_Click"/>
+                <Button x:Name="btnSalvar" Content="Salvar" MinWidth="100" Click="btnSalvar_ClickAsync"/>
+            </StackPanel>
+        </StackPanel>
     </Grid>
 </Window>

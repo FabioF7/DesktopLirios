@@ -92,10 +92,10 @@ namespace DesktopLirios
             }
             else
             {
-                btnHistorico.IsEnabled = false;
-                btnVenda.IsEnabled = false;
+                btnHistorico.Visibility = Visibility.Collapsed;
+                btnVenda.Visibility = Visibility.Collapsed;
                 btnOk.Visibility = Visibility.Collapsed;
-                lblPagou.Visibility = Visibility.Collapsed;
+                txtPagou.Visibility = Visibility.Collapsed;
                 txtPagou.Visibility = Visibility.Collapsed;
             }
 
@@ -193,8 +193,8 @@ namespace DesktopLirios
             ClienteEdicao.Observacoes = ClienteMostra.Observacoes;
             //txtIndicacao.Text = Cliente.Indicacao;
 
-            btnHistorico.IsEnabled = false;
-            btnVenda.IsEnabled = false;
+            btnHistorico.Visibility = Visibility.Collapsed;
+            btnVenda.Visibility = Visibility.Collapsed;
 
             return ClienteEdicao;
         }

@@ -229,5 +229,9 @@ namespace DesktopLirios
             grdVendas.ItemsSource = vendasFiltradas;
         }
 
+        private void btnExcluir_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

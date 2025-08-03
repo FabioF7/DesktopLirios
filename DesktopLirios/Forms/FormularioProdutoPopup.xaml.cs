@@ -177,5 +177,19 @@ namespace DesktopLirios
             return nomesOrigens;
         }
 
+        private void btnVendas_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void btnHestoque_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void btnEntradas_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

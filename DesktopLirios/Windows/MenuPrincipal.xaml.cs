@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Security;
 using System.Windows;
+using System.Windows.Controls;
 
 namespace DesktopLirios
 {
@@ -20,9 +21,7 @@ namespace DesktopLirios
             InitializeComponent();
             jwtToken = token;
             CenterWindowOnScreen();
-            CarregarClientesAsync();
-            CarregarProdutosAsync();
-            CarregarVendasAsync();
+            MenuPrincipal_Loaded();
         }
 
         private void CenterWindowOnScreen()
@@ -37,59 +36,56 @@ namespace DesktopLirios
             Top = (screenHeight - windowHeight) / 2;
         }
 
-        private void LbiInicio_Selected(object sender, RoutedEventArgs e)
+        private void MenuPrincipal_Loaded()
         {
-            MainFrame.Navigate(new PaginaInicio());
+            CarregarClientesAsync();
+            CarregarProdutosAsync();
+            CarregarVendasAsync();
         }
 
-        private void LbiAgenda_Selected(object sender, RoutedEventArgs e)
+        private void MenuList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            MainFrame.Navigate(new PaginaAgenda(jwtToken));
-        }
+            if (MainFrame == null) return;
 
-        private void LbiVendas_Selected(object sender, RoutedEventArgs e)
-        {
-            MainFrame.Navigate(new PaginaVendas(jwtToken));
-        }
+            switch (MenuList.SelectedIndex)
+            {
+                case 0:
+                    MainFrame.Navigate(new PaginaInicio());
+                    break;
+                case 1:
+                    MainFrame.Navigate(new PaginaAgenda(jwtToken));
+                    break;
+                case 2:
+                    MainFrame.Navigate(new PaginaVendas(jwtToken));
+                    break;
+                case 3:
+                    MainFrame.Navigate(new PaginaClientes(jwtToken));
+                    break;
+                case 4:
+                    MainFrame.Navigate(new PaginaServicos(jwtToken));
+                    break;
+                case 5:
+                    MainFrame.Navigate(new PaginaProdutos(jwtToken));
+                    break;
+                case 6:
+                    MainFrame.Navigate(new PaginaGastos(jwtToken));
+                    break;
+                case 7:
+                    //MainFrame.Navigate(new EntradasPage());
+                    break;
+                case 8:
+                    MainFrame.Navigate(new PaginaInventario(jwtToken));
+                    break;
+                case 9:
+                    MainFrame.Navigate(new PaginaRelatorios(jwtToken));
+                    break;
+                case 10:
+                    MainFrame.Navigate(new PaginaOutros(jwtToken));
+                    break;
+                default:
+                    break;
+            }
 
-        private void LbiClientes_Selected(object sender, RoutedEventArgs e)
-        {
-            MainFrame.Navigate(new PaginaClientes(jwtToken));
-        }
-
-        private void LbiServicos_Selected(object sender, RoutedEventArgs e)
-        {
-            MainFrame.Navigate(new PaginaServicos(jwtToken));
-        }
-
-        private void LbiProdutos_Selected(object sender, RoutedEventArgs e)
-        {
-            MainFrame.Navigate(new PaginaProdutos(jwtToken));
-        }
-
-        private void LbiGastos_Selected(object sender, RoutedEventArgs e)
-        {
-            MainFrame.Navigate(new PaginaGastos(jwtToken));
-        }
-
-        private void LbiEntradas_Selected(object sender, RoutedEventArgs e)
-        {
-            //MainFrame.Navigate(new PaginaEntradas(jwtToken));
-        }
-
-        private void LbiInventario_Selected(object sender, RoutedEventArgs e)
-        {
-            MainFrame.Navigate(new PaginaInventario(jwtToken));
-        }
-
-        private void LbiRelatorios_Selected(object sender, RoutedEventArgs e)
-        {
-            MainFrame.Navigate(new PaginaRelatorios(jwtToken));
-        }
-
-        private void LbiOutros_Selected(object sender, RoutedEventArgs e)
-        {
-            MainFrame.Navigate(new PaginaOutros(jwtToken));
         }
 
         private async void CarregarClientesAsync()

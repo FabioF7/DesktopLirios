@@ -1,57 +1,111 @@
 ﻿<Window x:Class="DesktopLirios.MenuPrincipal"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:DesktopLirios"
-        mc:Ignorable="d" 
-        Title="MenuPrincipal" Width="1366" Height="768" HorizontalAlignment="Center" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
+        Title="Menu – Sistema Lírios"
+        Width="1366" Height="768"
+        WindowStartupLocation="CenterScreen"
+        Background="{StaticResource BackgroundBrush}">
+
     <Grid>
-        <!-- Barra lateral de menu -->
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto" MinWidth="150"/>
-            <!-- Largura automática para a barra lateral -->
+            <ColumnDefinition Width="220"/>
             <ColumnDefinition/>
-            <!-- Largura proporcional ao restante do espaço disponível -->
         </Grid.ColumnDefinitions>
 
-        <ListBox x:Name="MenuList" Grid.Column="0" FontFamily="Calibri" FontSize="18" Foreground="White" VerticalAlignment="Center" Height="563" BorderThickness="0,0,0,0" FontWeight="Bold" Margin="10,0,10,0">
-            <ListBox.ItemContainerStyle>
-                <Style TargetType="ListBoxItem">
-                    <Setter Property="Template">
-                        <Setter.Value>
-                            <ControlTemplate TargetType="ListBoxItem">
-                                <Border BorderBrush="Black" BorderThickness="0" CornerRadius="15" Padding="7" Margin="22,0,0,15" Background="{TemplateBinding Background}">
-                                    <ContentPresenter HorizontalAlignment="Center"/>
-                                </Border>
-                            </ControlTemplate>
-                        </Setter.Value>
-                    </Setter>
-                </Style>
-            </ListBox.ItemContainerStyle>
-            <ListBoxItem x:Name="LbiInicio" Background="Black" HorizontalAlignment="Left" Selected="LbiInicio_Selected" Width="113">Início</ListBoxItem>
-            <ListBoxItem x:Name="LbiAgenda" Background="Black" HorizontalAlignment="Left" Selected="LbiAgenda_Selected" Width="113">Agenda</ListBoxItem>
-            <ListBoxItem x:Name="LbiVendas" Background="Black" HorizontalAlignment="Left" Selected="LbiVendas_Selected" Width="113">Vendas</ListBoxItem>
-            <ListBoxItem x:Name="LbiClientes" Background="Black" HorizontalAlignment="Left" Selected="LbiClientes_Selected" Width="113">Clientes</ListBoxItem>
-            <ListBoxItem x:Name="LbiServicos" Background="Black" Selected="LbiServicos_Selected" HorizontalAlignment="Left" Width="113">Serviço</ListBoxItem>
-            <ListBoxItem x:Name="LbiProdutos" Background="Black" HorizontalAlignment="Left" Selected="LbiProdutos_Selected" Width="113">Produtos</ListBoxItem>
-            <ListBoxItem x:Name="LbiGastos" Background="Black" HorizontalAlignment="Left" Selected="LbiGastos_Selected" Width="113">Gastos</ListBoxItem>
-            <ListBoxItem x:Name="LbiEntradas" Background="Black" Selected="LbiEntradas_Selected" HorizontalAlignment="Left" Width="113">Entradas</ListBoxItem>
-            <ListBoxItem x:Name="LbiInventario" Background="Black" HorizontalAlignment="Left" Selected="LbiInventario_Selected" Width="113">Inventario</ListBoxItem>
-            <ListBoxItem x:Name="LbiRelatorios" Background="Black" HorizontalAlignment="Left" Selected="LbiRelatorios_Selected" Width="113">Relatórios</ListBoxItem>
-            <ListBoxItem x:Name="LbiOutros" Background="Black" HorizontalAlignment="Left" Selected="LbiOutros_Selected" Width="113">Outros</ListBoxItem>
-            <!-- Adicione mais itens conforme necessário -->
-        </ListBox>
+        <!-- SIDEBAR -->
+        <Border Grid.Column="0"
+                Background="{StaticResource PrimaryBrush}"
+                CornerRadius="0,8,8,0"
+                Padding="16"
+                Effect="{StaticResource ShadowEffect}">
+            <StackPanel>
+                <Image Source="pack://application:,,,/Resources/LogoLirios.png"
+                       Width="100" Height="100"
+                       Margin="0,0,0,24"
+                       HorizontalAlignment="Center"/>
 
-        <!-- Conteúdo principal -->
-        <Grid x:Name="grdTelaSistema" Grid.Column="1">
+                <ListBox x:Name="MenuList"
+                         Background="Transparent"
+                         BorderThickness="0"
+                         Foreground="White"
+                         FontSize="16"
+                         FontWeight="Bold"
+                         SelectionChanged="MenuList_SelectionChanged"
+                         SelectedIndex="0">
+                    <ListBox.ItemContainerStyle>
+                        <Style TargetType="ListBoxItem">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="ListBoxItem">
+                                        <Border x:Name="Bd"
+                                                Background="Transparent"
+                                                CornerRadius="4"
+                                                Padding="8"
+                                                Margin="0,4"
+                                                Cursor="Hand">
+                                            <ContentPresenter VerticalAlignment="Center"
+                                                              HorizontalAlignment="Center"/>
+                                        </Border>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter TargetName="Bd"
+                                                        Property="Background"
+                                                        Value="{StaticResource SecondaryBrush}"/>
+                                            </Trigger>
+                                            <Trigger Property="IsSelected" Value="True">
+                                                <Setter TargetName="Bd"
+                                                        Property="Background"
+                                                        Value="{StaticResource DetailBrush}"/>
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </ListBox.ItemContainerStyle>
+
+                    <!-- Botões do menu -->
+                    <ListBoxItem>Início</ListBoxItem>
+                    <ListBoxItem>Agenda</ListBoxItem>
+                    <ListBoxItem>Vendas</ListBoxItem>
+                    <ListBoxItem>Clientes</ListBoxItem>
+                    <ListBoxItem>Serviços</ListBoxItem>
+                    <ListBoxItem>Produtos</ListBoxItem>
+                    <ListBoxItem>Gastos</ListBoxItem>
+                    <ListBoxItem>Entradas</ListBoxItem>
+                    <ListBoxItem>Inventário</ListBoxItem>
+                    <ListBoxItem>Relatórios</ListBoxItem>
+                    <ListBoxItem>Outros</ListBoxItem>
+                </ListBox>
+            </StackPanel>
+        </Border>
+
+        <!-- CONTEÚDO -->
+        <Grid Grid.Column="1">
             <Grid.RowDefinitions>
-                <RowDefinition Height="768*"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition/>
             </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="1216*"/>
-            </Grid.ColumnDefinitions>
-            <Frame x:Name="MainFrame" NavigationUIVisibility="Hidden"/>
+
+            <!-- Top bar com saudação -->
+            <Border Grid.Row="0"
+                    Background="White"
+                    Padding="12,8"
+                    Effect="{StaticResource ShadowEffect}">
+                <DockPanel>
+                    <TextBlock Text="Bem‑vindo, [Usuário]"
+                               FontSize="18"
+                               FontWeight="SemiBold"
+                               Foreground="{StaticResource PrimaryBrush}"
+                               DockPanel.Dock="Right"/>
+                </DockPanel>
+            </Border>
+
+            <!-- Área principal -->
+            <Frame x:Name="MainFrame"
+                   Grid.Row="1"
+                   NavigationUIVisibility="Hidden"
+                   Background="{StaticResource BackgroundBrush}"/>
         </Grid>
     </Grid>
 </Window>
